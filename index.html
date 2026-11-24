@@ -1,0 +1,3150 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PassageNote — 영어 원문·문제 풀이 학습 노트 (단일 HTML 버전)</title>
+    <meta
+      name="description"
+      content="프레임워크·빌드 없이 브라우저에서 바로 실행되는 수능·내신 영어 원문 독해, 문제 풀이, 영작 서술형 학습 노트"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f8fafc;
+        --surface: #ffffff;
+        --surface-soft: #f1f5f9;
+        --border: #e2e8f0;
+        --border-strong: #cbd5e1;
+        --text: #0f172a;
+        --text-muted: #475569;
+        --text-subtle: #64748b;
+        --primary: #1d4ed8;
+        --primary-hover: #1e40af;
+        --primary-soft: #eff6ff;
+        --primary-border: #bfdbfe;
+        --emerald: #047857;
+        --emerald-soft: #ecfdf5;
+        --emerald-border: #a7f3d0;
+        --amber: #b45309;
+        --amber-soft: #fffbeb;
+        --amber-border: #fde68a;
+        --red: #b91c1c;
+        --red-soft: #fef2f2;
+        --red-border: #fecaca;
+        --font-sans: 'Plus Jakarta Sans', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        --font-serif: 'Source Serif 4', 'Noto Sans KR', Georgia, serif;
+        --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: var(--font-sans);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      button,
+      input,
+      textarea,
+      select {
+        font-family: inherit;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      button:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+
+      .font-editorial {
+        font-family: var(--font-serif);
+      }
+
+      .font-mono-tabular {
+        font-family: var(--font-mono);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .tabular-nums {
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* TopBar */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .topbar-inner {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 0 20px;
+        height: 62px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+      }
+
+      .brand-btn {
+        background: none;
+        border: none;
+        padding: 0;
+        font-family: var(--font-serif);
+        font-size: 21px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--text);
+        white-space: nowrap;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        overflow-x: auto;
+      }
+
+      .nav-btn {
+        position: relative;
+        background: none;
+        border: none;
+        padding: 8px 2px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-muted);
+        white-space: nowrap;
+      }
+
+      .nav-btn:hover {
+        color: var(--text);
+      }
+
+      .nav-btn.active {
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      .nav-btn.active::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -11px;
+        height: 2px;
+        background: var(--primary);
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 9px 15px;
+        border: 1px solid transparent;
+        transition: background-color 0.15s ease, border-color 0.15s ease;
+        white-space: nowrap;
+      }
+
+      .btn-sm {
+        padding: 6px 11px;
+        font-size: 12px;
+        border-radius: 7px;
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: #ffffff;
+      }
+
+      .btn-primary:hover:not(:disabled) {
+        background: var(--primary-hover);
+      }
+
+      .btn-dark {
+        background: #0f172a;
+        color: #ffffff;
+      }
+
+      .btn-dark:hover:not(:disabled) {
+        background: #1e293b;
+      }
+
+      .btn-outline {
+        background: #ffffff;
+        color: var(--text);
+        border-color: var(--border-strong);
+      }
+
+      .btn-outline:hover:not(:disabled) {
+        background: var(--bg);
+      }
+
+      .btn-soft {
+        background: var(--surface-soft);
+        color: var(--text-muted);
+        border-color: var(--border);
+      }
+
+      .btn-soft:hover:not(:disabled) {
+        background: #e2e8f0;
+        color: var(--text);
+      }
+
+      .btn-danger-soft {
+        background: var(--red-soft);
+        color: var(--red);
+        border-color: var(--red-border);
+      }
+
+      .mobile-nav {
+        display: none;
+        border-top: 1px solid #f1f5f9;
+        padding: 6px 12px;
+        gap: 6px;
+        overflow-x: auto;
+      }
+
+      /* Main Container */
+      .main-wrap {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 24px 20px 88px;
+      }
+
+      .feed-layout {
+        display: grid;
+        grid-template-columns: 320px minmax(0, 1fr);
+        gap: 24px;
+        align-items: start;
+      }
+
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        overflow: hidden;
+      }
+
+      .sidebar-head {
+        padding: 16px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .sidebar-title-row {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .sidebar-title {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .input-box {
+        width: 100%;
+        padding: 9px 12px;
+        font-size: 13px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text);
+      }
+
+      .input-box:focus {
+        outline: none;
+        background: #ffffff;
+        border-color: var(--primary);
+      }
+
+      .seg-grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 4px;
+        padding: 4px;
+        background: var(--surface-soft);
+        border-radius: 8px;
+      }
+
+      .seg-btn {
+        background: transparent;
+        border: none;
+        padding: 6px 4px;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--text-muted);
+        border-radius: 6px;
+      }
+
+      .seg-btn.active {
+        background: #ffffff;
+        color: var(--text);
+        font-weight: 600;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+      }
+
+      .feed-list {
+        max-height: calc(100vh - 255px);
+        overflow-y: auto;
+      }
+
+      .feed-item {
+        width: 100%;
+        text-align: left;
+        background: #ffffff;
+        border: none;
+        border-bottom: 1px solid #f1f5f9;
+        padding: 14px 16px;
+        display: block;
+      }
+
+      .feed-item:hover {
+        background: #f8fafc;
+      }
+
+      .feed-item.selected {
+        background: #eff6ff;
+      }
+
+      .feed-item-meta {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        font-size: 11px;
+        color: var(--text-subtle);
+      }
+
+      .feed-item-title {
+        margin: 5px 0 0;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.4;
+        color: var(--text);
+      }
+
+      .feed-item.selected .feed-item-title {
+        color: #1e3a8a;
+      }
+
+      .feed-item-foot {
+        margin-top: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        font-size: 12px;
+      }
+
+      .status-ok {
+        color: var(--emerald);
+        font-weight: 600;
+      }
+
+      .status-review {
+        color: var(--amber);
+        font-weight: 600;
+      }
+
+      /* Workspace */
+      .ws-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        color: var(--text-subtle);
+      }
+
+      .tag-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 2px 8px;
+        font-size: 11px;
+        font-weight: 600;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        background: var(--surface-soft);
+        color: var(--text-muted);
+      }
+
+      .tag-badge.blue {
+        background: var(--primary-soft);
+        border-color: var(--primary-border);
+        color: #1e40af;
+      }
+
+      .tag-badge.emerald {
+        background: var(--emerald-soft);
+        border-color: var(--emerald-border);
+        color: var(--emerald);
+      }
+
+      .ws-title {
+        margin: 8px 0 4px;
+        font-family: var(--font-serif);
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 1.3;
+      }
+
+      .ws-summary {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--text-muted);
+      }
+
+      .ws-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+        align-items: start;
+      }
+
+      .ws-left {
+        padding: 20px;
+        border-right: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .ws-right {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+
+      .tab-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 12px 20px;
+        border-bottom: 1px solid var(--border);
+        background: #f8fafc;
+      }
+
+      .tab-btn {
+        background: #ffffff;
+        border: 1px solid var(--border);
+        border-radius: 7px;
+        padding: 7px 12px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-muted);
+      }
+
+      .tab-btn.active {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: #ffffff;
+      }
+
+      .ws-body {
+        padding: 20px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .photo-stage {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: #0f172a;
+        overflow: auto;
+        max-height: 360px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px;
+      }
+
+      .photo-stage img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 6px;
+        transform-origin: center top;
+        transition: transform 0.15s ease;
+      }
+
+      .thumb-strip {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+
+      .thumb-btn {
+        border: 2px solid var(--border);
+        border-radius: 8px;
+        padding: 3px;
+        background: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        font-size: 11px;
+        color: var(--text-muted);
+        flex-shrink: 0;
+      }
+
+      .thumb-btn.active {
+        border-color: var(--primary);
+        color: var(--primary);
+        font-weight: 600;
+      }
+
+      .thumb-btn img {
+        width: 58px;
+        height: 44px;
+        object-fit: cover;
+        border-radius: 5px;
+      }
+
+      .passage-box {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 14px 16px;
+        background: #f8fafc;
+        font-size: 13.5px;
+        line-height: 1.75;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .sentence-inline.evidence {
+        background: #fef3c7;
+        border-radius: 4px;
+        padding: 1px 3px;
+      }
+
+      .choice-card {
+        width: 100%;
+        text-align: left;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 12px 14px;
+        background: #ffffff;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .choice-card.selected {
+        border-color: var(--primary);
+        background: var(--primary-soft);
+      }
+
+      .choice-card.correct {
+        border-color: var(--emerald-border);
+        background: var(--emerald-soft);
+      }
+
+      .choice-card.wrong {
+        border-color: var(--red-border);
+        background: var(--red-soft);
+      }
+
+      .subpanel {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 14px 16px;
+        background: #ffffff;
+      }
+
+      .subpanel.soft {
+        background: #f8fafc;
+      }
+
+      .subpanel.emerald {
+        background: var(--emerald-soft);
+        border-color: var(--emerald-border);
+      }
+
+      .subpanel.amber {
+        background: var(--amber-soft);
+        border-color: var(--amber-border);
+      }
+
+      .subpanel.blue {
+        background: var(--primary-soft);
+        border-color: var(--primary-border);
+      }
+
+      .step-card {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 14px;
+        background: #ffffff;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .english-mono {
+        font-family: var(--font-serif);
+        font-size: 15px;
+        line-height: 1.65;
+        color: var(--text);
+      }
+
+      .vocab-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 12px;
+      }
+
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+
+      .kpi-card {
+        padding: 16px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: #f8fafc;
+      }
+
+      /* Modals & Drawers */
+      .backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        background: rgba(15, 23, 42, 0.45);
+        backdrop-filter: blur(2px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+      }
+
+      .backdrop.hidden {
+        display: none;
+      }
+
+      .modal-card {
+        width: 100%;
+        max-width: 820px;
+        max-height: 92vh;
+        background: #ffffff;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        box-shadow: 0 24px 48px rgba(15, 23, 42, 0.22);
+      }
+
+      .modal-head {
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .modal-body {
+        padding: 20px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .crop-stage {
+        position: relative;
+        user-select: none;
+        touch-action: none;
+        display: inline-block;
+        max-width: 100%;
+        cursor: crosshair;
+      }
+
+      .crop-stage img {
+        display: block;
+        max-width: 100%;
+        max-height: 290px;
+        border-radius: 6px;
+      }
+
+      .crop-box {
+        position: absolute;
+        border: 2px solid #2563eb;
+        background: rgba(37, 99, 235, 0.16);
+        pointer-events: none;
+      }
+
+      .dropzone {
+        border: 2px dashed var(--border-strong);
+        border-radius: 12px;
+        padding: 28px 16px;
+        text-align: center;
+        background: #f8fafc;
+      }
+
+      .dropzone.dragging {
+        border-color: var(--primary);
+        background: var(--primary-soft);
+      }
+
+      /* Floating Tutor Button & Drawer */
+      .floating-tutor-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        z-index: 40;
+        padding: 12px 18px;
+        border-radius: 12px;
+        border: 1px solid #334155;
+        background: #0f172a;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.22);
+      }
+
+      .drawer-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 55;
+        background: rgba(15, 23, 42, 0.38);
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .drawer-backdrop.hidden {
+        display: none;
+      }
+
+      .drawer-panel {
+        width: 100%;
+        max-width: 480px;
+        height: 100%;
+        background: #ffffff;
+        border-left: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        box-shadow: -12px 0 36px rgba(15, 23, 42, 0.16);
+      }
+
+      .chat-thread {
+        flex: 1;
+        min-height: 140px;
+        overflow-y: auto;
+        padding: 16px;
+        background: #f8fafc;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .chat-bubble {
+        max-width: 90%;
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-size: 13px;
+        line-height: 1.55;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .chat-bubble.user {
+        align-self: flex-end;
+        background: var(--primary);
+        color: #ffffff;
+      }
+
+      .chat-bubble.model {
+        align-self: flex-start;
+        background: #ffffff;
+        border: 1px solid var(--border);
+        color: var(--text);
+      }
+
+      .chip-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .chip-btn {
+        padding: 5px 9px;
+        font-size: 11px;
+        font-weight: 500;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        background: #ffffff;
+        color: var(--text-muted);
+      }
+
+      .chip-btn.active {
+        background: var(--primary-soft);
+        border-color: var(--primary);
+        color: #1e3a8a;
+        font-weight: 600;
+      }
+
+      .notice-box {
+        padding: 12px 14px;
+        border-radius: 10px;
+        font-size: 12.5px;
+        line-height: 1.5;
+        border: 1px solid var(--border);
+      }
+
+      .notice-box.success {
+        background: var(--emerald-soft);
+        border-color: var(--emerald-border);
+        color: var(--emerald);
+      }
+
+      .notice-box.error {
+        background: var(--red-soft);
+        border-color: var(--red-border);
+        color: var(--red);
+      }
+
+      @media (max-width: 980px) {
+        .feed-layout {
+          grid-template-columns: 1fr;
+        }
+        .ws-grid {
+          grid-template-columns: 1fr;
+        }
+        .ws-left {
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+        .kpi-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 720px) {
+        .nav-links {
+          display: none;
+        }
+        .mobile-nav {
+          display: flex;
+        }
+        .topbar-inner {
+          height: 56px;
+          padding: 0 14px;
+        }
+        .main-wrap {
+          padding: 16px 12px 84px;
+        }
+      }
+    </style>
+  <script src="/_aistudio-iframe.js?v=29045eb3"></script></head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <button type="button" class="brand-btn" id="brandHomeBtn">PassageNote</button>
+        <nav class="nav-links" id="desktopNav" aria-label="주요 메뉴"></nav>
+        <div style="display: flex; align-items: center; gap: 8px">
+          <button type="button" class="btn btn-primary" id="openSnapBtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+              <circle cx="12" cy="13" r="3" />
+            </svg>
+            <span>새 문제·노트 등록</span>
+          </button>
+        </div>
+      </div>
+      <nav class="mobile-nav" id="mobileNav" aria-label="모바일 메뉴"></nav>
+    </header>
+
+    <main class="main-wrap" id="appRoot"></main>
+
+    <button type="button" class="floating-tutor-btn" id="openTutorBtn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      </svg>
+      <span>학습 코치 채팅</span>
+    </button>
+
+    <!-- New Problem / Note Modal -->
+    <div class="backdrop hidden" id="snapModalBackdrop" role="dialog" aria-modal="true" aria-labelledby="snapModalTitle">
+      <div class="modal-card">
+        <div class="modal-head">
+          <div>
+            <h2 id="snapModalTitle" style="margin: 0; font-size: 16px; font-weight: 700">
+              새 영어·한국어 문제 / 원문 등록
+            </h2>
+            <p style="margin: 2px 0 0; font-size: 12px; color: var(--text-subtle)">
+              사진(최대 6장, 드래그 자르기·회전) 또는 텍스트를 입력하면 즉시 학습 노트로 정리합니다.
+            </p>
+          </div>
+          <button type="button" class="btn btn-soft btn-sm" id="closeSnapBtn">닫기</button>
+        </div>
+
+        <form id="snapForm" class="modal-body">
+          <div style="display: flex; gap: 8px">
+            <button type="button" class="btn btn-sm" id="snapTabPhotoBtn">사진 여러 장 첨부</button>
+            <button type="button" class="btn btn-sm" id="snapTabTextBtn">문제·원문 텍스트 입력</button>
+          </div>
+
+          <div id="snapPhotoSection" style="display: flex; flex-direction: column; gap: 12px">
+            <input type="file" id="snapFileInput" accept="image/*" multiple style="display: none" />
+            <div class="dropzone" id="snapDropzone">
+              <p style="margin: 0 0 8px; font-size: 13px; font-weight: 600">
+                사진 파일을 끌어다 놓거나 버튼으로 여러 장 선택하세요 (최대 6장 · Ctrl+V 붙여넣기 가능)
+              </p>
+              <button type="button" class="btn btn-outline btn-sm" id="pickFilesBtn">사진 파일 선택</button>
+            </div>
+
+            <div id="snapEditorWrap" style="display: none; flex-direction: column; gap: 10px">
+              <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px">
+                <span id="snapActiveLabel" style="font-size: 12px; font-weight: 600; color: var(--text-muted)"></span>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap">
+                  <button type="button" class="btn btn-soft btn-sm" id="rotateLeftBtn">왼쪽 90°</button>
+                  <button type="button" class="btn btn-soft btn-sm" id="rotateRightBtn">오른쪽 90°</button>
+                  <button type="button" class="btn btn-soft btn-sm" id="resetCropBtn">자르기 초기화</button>
+                  <button type="button" class="btn btn-soft btn-sm" id="moveLeftBtn">순서 ←</button>
+                  <button type="button" class="btn btn-soft btn-sm" id="moveRightBtn">순서 →</button>
+                  <button type="button" class="btn btn-danger-soft btn-sm" id="removePhotoBtn">사진 삭제</button>
+                </div>
+              </div>
+              <div style="background: #0f172a; border-radius: 10px; padding: 10px; text-align: center">
+                <div class="crop-stage" id="cropStage">
+                  <img id="cropPreviewImg" alt="업로드 사진 미리보기" />
+                  <div class="crop-box" id="cropBox" style="display: none"></div>
+                </div>
+                <p style="margin: 6px 0 0; font-size: 11px; color: #cbd5e1">
+                  이미지 위에서 마우스(또는 손가락)로 드래그하면 원하는 문제 영역만 잘라낼 수 있습니다.
+                </p>
+              </div>
+              <div class="thumb-strip" id="snapThumbStrip"></div>
+            </div>
+
+            <div>
+              <label for="snapPhotoTextNote" style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 5px">
+                사진 속 텍스트 / 문제 발문 함께 입력 (선택 — 입력 시 직독직해·구문·선지 자동 분리)
+              </label>
+              <textarea
+                id="snapPhotoTextNote"
+                rows="4"
+                class="input-box"
+                placeholder="사진만 올려도 노트가 저장됩니다. 사진 속 영어 지문, &lt;보기&gt;, &lt;조건&gt;, ①~⑤ 선지를 함께 적거나 붙여넣으면 직독직해·어휘·영작 체크리스트까지 자동 생성됩니다."
+              ></textarea>
+            </div>
+          </div>
+
+          <div id="snapTextSection" style="display: none; flex-direction: column; gap: 10px">
+            <label for="snapTextInput" style="font-size: 12px; font-weight: 600">
+              영어 원문 / 객관식 문제 / 한국어·한영 혼합 영작 문제 입력
+            </label>
+            <textarea
+              id="snapTextInput"
+              rows="8"
+              class="input-box"
+              placeholder="예시 1) 영어 지문 + ①~⑤ 선지&#10;예시 2) [한·영 혼합 서술형] 다음 우리말과 &lt;조건&gt;에 맞게 빈칸을 영작하시오. &lt;보기&gt; word1, word2 &lt;조건&gt; 관계대명사 what 사용"
+            ></textarea>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px">
+            <div>
+              <label for="snapSourceTag" style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 5px">
+                출처 / 메모 (선택)
+              </label>
+              <input id="snapSourceTag" type="text" class="input-box" placeholder="예: 고2 9월 모의고사 31번 / 2과 서술형" />
+            </div>
+            <div>
+              <label for="snapModeSelect" style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 5px">
+                학습 유형
+              </label>
+              <select id="snapModeSelect" class="input-box">
+                <option value="auto">자동 판별 (문제 · 영작 · 원문)</option>
+                <option value="problem">객관식 · 문제 풀이</option>
+                <option value="writing">영작 · 서술형</option>
+                <option value="passage">순수 원문 독해</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="subpanel soft" style="display: flex; flex-direction: column; gap: 8px">
+            <span style="font-size: 12px; font-weight: 700">원하는 풀이·정리 방식</span>
+            <div class="chip-group" id="snapStyleChips"></div>
+            <input
+              id="snapSolveNote"
+              type="text"
+              class="input-box"
+              placeholder="추가 요청 예: 주어·동사를 먼저 짚고 오답 이유를 정리하고 싶어요"
+            />
+          </div>
+
+          <div id="snapErrorBox" class="notice-box error" style="display: none"></div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 8px; padding-top: 6px; border-top: 1px solid var(--border)">
+            <button type="button" class="btn btn-outline" id="cancelSnapBtn">취소</button>
+            <button type="submit" class="btn btn-primary" id="submitSnapBtn">노트 생성 및 저장</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Study Coach Chat Drawer -->
+    <div class="drawer-backdrop hidden" id="tutorDrawerBackdrop" role="dialog" aria-modal="true" aria-labelledby="tutorTitle">
+      <div style="flex: 1" id="tutorBackdropSpacer"></div>
+      <aside class="drawer-panel">
+        <div class="modal-head">
+          <div>
+            <h2 id="tutorTitle" style="margin: 0; font-size: 15px; font-weight: 700">학습 코치 채팅</h2>
+            <p id="tutorRoleDesc" style="margin: 2px 0 0; font-size: 11px; color: var(--text-subtle)">
+              현재 노트 문장·조건·퀴즈를 바탕으로 즉시 질문하고 점검합니다.
+            </p>
+          </div>
+          <div style="display: flex; gap: 6px">
+            <button type="button" class="btn btn-soft btn-sm" id="resetChatBtn">초기화</button>
+            <button type="button" class="btn btn-soft btn-sm" id="closeTutorBtn">닫기</button>
+          </div>
+        </div>
+
+        <div style="padding: 12px 14px; border-bottom: 1px solid var(--border); background: #f8fafc; display: flex; flex-direction: column; gap: 8px">
+          <div class="chip-group" id="tutorRoleChips"></div>
+          <div class="chip-group" id="tutorStyleChips"></div>
+          <label style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted)">
+            <input type="checkbox" id="tutorAttachContext" checked />
+            <span>현재 선택된 노트(<strong id="tutorContextTitle">없음</strong>) 연결</span>
+          </label>
+        </div>
+
+        <div class="chat-thread" id="tutorThread"></div>
+
+        <form id="tutorForm" style="padding: 12px 14px; border-top: 1px solid var(--border); background: #ffffff; display: flex; flex-direction: column; gap: 8px">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+            <button type="button" class="btn btn-soft btn-sm" id="toggleCustomCondBtn">
+              원하는 조건 · 질문 내용 지정
+            </button>
+            <button type="button" class="btn btn-soft btn-sm" id="clearCustomCondBtn" style="display: none">
+              조건 비우기
+            </button>
+          </div>
+
+          <div id="tutorCustomBox" class="subpanel soft" style="padding: 10px; display: flex; flex-direction: column; gap: 8px">
+            <div class="chip-group" id="tutorConditionPresets"></div>
+            <input
+              id="tutorCustomCondition"
+              type="text"
+              class="input-box"
+              placeholder="원하는 답변 조건 예: 중3 눈높이로 쉽게, 3줄 요약, 변형 퀴즈 출제"
+            />
+            <div style="display: flex; justify-content: space-between; align-items: center">
+              <span style="font-size: 11px; font-weight: 600; color: var(--text-muted)">질문할 내용 (지문·문장·내 영작)</span>
+              <button type="button" id="importNoteTextBtn" style="background: none; border: none; font-size: 11px; font-weight: 600; color: var(--primary)">
+                현재 노트 원문 가져오기
+              </button>
+            </div>
+            <textarea
+              id="tutorCustomContent"
+              rows="2"
+              class="input-box"
+              placeholder="확인하고 싶은 영어 문장이나 내가 쓴 영작 문장을 입력해 보세요."
+            ></textarea>
+          </div>
+
+          <div style="display: flex; gap: 8px; align-items: flex-end">
+            <textarea
+              id="tutorInput"
+              rows="2"
+              class="input-box"
+              placeholder="질문, 영작 문장 점검, 또는 단어 퀴즈를 입력하세요 (Enter 전송)"
+            ></textarea>
+            <button type="submit" class="btn btn-primary" style="height: 54px">전송</button>
+          </div>
+        </form>
+      </aside>
+    </div>
+
+    <script>
+      (function () {
+        'use strict';
+
+        var STORAGE_KEY = 'passagenote_singlefile_posts_v1';
+        var CHAT_STORAGE_KEY = 'passagenote_singlefile_chat_v1';
+        var SEED_KEY = 'passagenote_singlefile_seeded_v1';
+        var MAX_PHOTOS = 6;
+
+        var SOLVE_STYLES = [
+          { id: 'balanced', label: '기본 균형' },
+          { id: 'beginner', label: '초보 눈높이' },
+          { id: 'step_by_step', label: '단계별 풀이' },
+          { id: 'concise', label: '핵심만 빠르게' },
+          { id: 'exam_trap', label: '내신·함정 대비' }
+        ];
+
+        var TUTOR_ROLES = [
+          { id: 'tutor', label: '1:1 학습 코치', desc: '문장 구조·직독직해·풀이 방식 안내' },
+          { id: 'writing_coach', label: '서술형 영작 코치', desc: '어순·조건·모범 답안 대조 점검' },
+          { id: 'quick_quiz', label: '스피드 단어 퀴즈', desc: '현재 노트 핵심 어휘 즉석 퀴즈' }
+        ];
+
+        var CONDITION_PRESETS = [
+          '초보 눈높이로 쉽게',
+          '직독직해 끊어읽기 포함',
+          '오답·근거 1:1 정리',
+          '3줄 핵심 요약',
+          '내신 감점 포인트 체크',
+          '어휘 퀴즈 1문제 출제'
+        ];
+
+        var memoryStorage = {};
+        function safeGetItem(key) {
+          try {
+            return window.localStorage.getItem(key);
+          } catch (e) {
+            return memoryStorage[key] || null;
+          }
+        }
+        function safeSetItem(key, val) {
+          try {
+            window.localStorage.setItem(key, val);
+          } catch (e) {
+            memoryStorage[key] = val;
+          }
+        }
+
+        function escapeHtml(str) {
+          if (str === null || str === undefined) return '';
+          return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+        }
+
+        function formatDate(ts) {
+          var d = new Date(ts);
+          return d.getFullYear() + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.' + String(d.getDate()).padStart(2, '0');
+        }
+
+        function formatShortDate(ts) {
+          var d = new Date(ts);
+          return String(d.getMonth() + 1).padStart(2, '0') + '.' + String(d.getDate()).padStart(2, '0');
+        }
+
+        function formatTime(ts) {
+          var d = new Date(ts);
+          return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+        }
+
+        function formatBytes(bytes) {
+          if (bytes < 1024) return bytes + ' B';
+          if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+          return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+        }
+
+        function getLangLabel(fmt) {
+          if (fmt === 'korean') return '한국어 문제';
+          if (fmt === 'mixed') return '한·영 혼합 문제';
+          return '영어 문제·원문';
+        }
+
+        function createSamplePosts() {
+          var now = Date.now();
+          return [
+            {
+              id: 'sample-eng-1',
+              createdAt: now - 86400000 * 2,
+              updatedAt: now - 86400000 * 2,
+              title: '디지털 시대의 비판적 읽기 전략',
+              sourceTag: '예시 · 고2 모의고사 유형',
+              languageFormat: 'english',
+              postType: 'problem',
+              studyStatus: 'review_needed',
+              imageDataUrls: [],
+              solvePreference: 'balanced',
+              solveRequestNote: '',
+              userMemo: 'not only A but also B 도치 구문과 근거 문장 3번 주의',
+              userSelectedChoice: null,
+              writingAttempts: [],
+              followUpHistory: [],
+              isSample: true,
+              analysis: {
+                title: '디지털 시대의 비판적 읽기 전략',
+                languageFormat: 'english',
+                detectedPostType: 'problem',
+                extractedText:
+                  'In an era of endless online feeds, readers often skim headlines rather than analyzing full arguments. However, genuine comprehension requires pausing to question the evidence behind every claim. Only when readers verify sources and compare multiple perspectives can they distinguish reliable insights from misleading noise.\n\nQ. What is the main idea of the passage?\n① Online feeds improve reading speed automatically.\n② Headlines are more accurate than full articles.\n③ Critical source verification is essential for true understanding.\n④ Readers should avoid reading news on digital devices.',
+                koreanInstruction: '다음 글의 요지로 가장 적절한 것을 고르시오.',
+                givenWords: [],
+                conditions: [],
+                summaryKorean:
+                  '온라인 정보 홍수 속에서는 제목만 훑어보는 습관을 멈추고, 출처를 검증하며 다양한 관점을 비교하는 비판적 읽기가 필요하다는 내용입니다.',
+                problemSection: {
+                  questionType: '주제·요지 파악',
+                  correctAnswer: '③',
+                  answerSummary:
+                    '2번째와 3번째 문장에서 주장 뒤의 근거를 의심하고 출처를 검증(verify sources)하며 다각도로 비교할 때 비로소 신뢰할 수 있는 통찰을 구분할 수 있다고 강조하므로 ③이 정답입니다.',
+                  evidenceSentences: [2, 3],
+                  choices: [
+                    { label: '①', text: 'Online feeds improve reading speed automatically.', isCorrect: false, explanation: '온라인 피드로 인해 글을 대충 훑어보게(skim) 된다고 했으므로 본문과 반대입니다.' },
+                    { label: '②', text: 'Headlines are more accurate than full articles.', isCorrect: false, explanation: '제목의 정확성이 더 높다는 언급은 없습니다.' },
+                    { label: '③', text: 'Critical source verification is essential for true understanding.', isCorrect: true, explanation: '2·3번 문장의 핵심 주장(근거 질문·출처 검증)과 정확히 일치합니다.' },
+                    { label: '④', text: 'Readers should avoid reading news on digital devices.', isCorrect: false, explanation: '디지털 기기 사용을 피하라는 극단적 주장은 나오지 않습니다.' }
+                  ]
+                },
+                writingSection: null,
+                sentences: [
+                  {
+                    index: 1,
+                    original: 'In an era of endless online feeds, readers often skim headlines rather than analyzing full arguments.',
+                    chunked: 'In an era of endless online feeds, / readers often skim headlines / rather than analyzing full arguments.',
+                    literalTranslation: '끝없는 온라인 피드의 시대에 / 독자들은 종종 제목을 훑어본다 / 전체 논증을 분석하기보다는.',
+                    naturalTranslation: '끝없는 온라인 피드 시대에 독자들은 전체 논증을 분석하기보다 제목만 대충 훑어보는 경우가 많다.',
+                    grammarPoints: [
+                      { pointTitle: 'rather than + 동명사', targetPhrase: 'rather than analyzing', explanation: '전치사/연결 표현 rather than 뒤에 동명사 analyzing이 와서 "~하기보다는"이라는 대조를 나타냅니다.' }
+                    ]
+                  },
+                  {
+                    index: 2,
+                    original: 'However, genuine comprehension requires pausing to question the evidence behind every claim.',
+                    chunked: 'However, / genuine comprehension requires pausing / to question the evidence behind every claim.',
+                    literalTranslation: '하지만 / 진정한 이해는 잠시 멈추는 것을 요구한다 / 모든 주장 뒤의 근거에 질문하기 위해.',
+                    naturalTranslation: '하지만 진정한 이해를 위해서는 잠시 멈춰 모든 주장의 근거에 의문을 품어야 한다.',
+                    grammarPoints: [
+                      { pointTitle: 'require + 동명사', targetPhrase: 'requires pausing', explanation: '동사 require의 목적어로 동명사 pausing이 쓰였으며, to question은 목적(~하기 위해)을 나타내는 to부정사입니다.' }
+                    ]
+                  },
+                  {
+                    index: 3,
+                    original: 'Only when readers verify sources and compare multiple perspectives can they distinguish reliable insights from misleading noise.',
+                    chunked: 'Only when readers verify sources and compare multiple perspectives / can they distinguish reliable insights / from misleading noise.',
+                    literalTranslation: '오직 독자들이 출처를 검증하고 여러 관점을 비교할 때만 / 그들은 신뢰할 만한 통찰을 구별할 수 있다 / 오해를 부르는 소음으로부터.',
+                    naturalTranslation: '독자들이 출처를 검증하고 여러 관점을 비교할 때에만 신뢰할 수 있는 통찰과 그릇된 정보를 구별할 수 있다.',
+                    grammarPoints: [
+                      { pointTitle: 'Only 부사절 문두 도치', targetPhrase: 'Only when ... can they distinguish', explanation: 'Only + 부사절이 문장 맨 앞으로 나오면 주절의 주어(they)와 조동사(can)의 어순이 도치됩니다.' },
+                      { pointTitle: 'distinguish A from B', targetPhrase: 'distinguish reliable insights from misleading noise', explanation: '"A와 B를 구별하다"라는 필수 숙어 표현입니다.' }
+                    ]
+                  }
+                ],
+                vocabulary: [
+                  { id: 'v1', word: 'comprehension', partOfSpeech: 'n.', meaning: '이해(력)', synonyms: ['understanding', 'grasp'], antonyms: ['misunderstanding'], exampleInPassage: 'genuine comprehension requires pausing', memorized: false },
+                  { id: 'v2', word: 'verify', partOfSpeech: 'v.', meaning: '검증하다, 확인하다', synonyms: ['confirm', 'validate'], antonyms: ['disprove'], exampleInPassage: 'verify sources and compare', memorized: false },
+                  { id: 'v3', word: 'perspective', partOfSpeech: 'n.', meaning: '관점, 시각', synonyms: ['viewpoint', 'standpoint'], antonyms: [], exampleInPassage: 'compare multiple perspectives', memorized: false },
+                  { id: 'v4', word: 'distinguish', partOfSpeech: 'v.', meaning: '구별하다, 식별하다', synonyms: ['differentiate', 'tell apart'], antonyms: ['confuse'], exampleInPassage: 'distinguish reliable insights from noise', memorized: false }
+                ]
+              }
+            },
+            {
+              id: 'sample-mix-2',
+              createdAt: now - 86400000,
+              updatedAt: now - 86400000,
+              title: '한·영 혼합 서술형: 습관 형성과 환경 설계',
+              sourceTag: '예시 · 내신 서술형 영작',
+              languageFormat: 'mixed',
+              postType: 'writing',
+              studyStatus: 'review_needed',
+              imageDataUrls: [],
+              solvePreference: 'step_by_step',
+              solveRequestNote: '',
+              userMemo: 'make + 목적어(it) + 목적보어(easier) + 진목적어(to build) 어순 꼭 확인!',
+              userSelectedChoice: null,
+              writingAttempts: [],
+              followUpHistory: [],
+              isSample: true,
+              analysis: {
+                title: '한·영 혼합 서술형: 습관 형성과 환경 설계',
+                languageFormat: 'mixed',
+                detectedPostType: 'writing',
+                extractedText:
+                  'Many students believe willpower alone determines their study habits. Yet behavioral research shows that small adjustments to our surroundings shape daily choices.\n\n[서술형] 글의 흐름에 맞게 다음 우리말 뜻이 되도록 <보기>의 단어를 배열하여 빈칸을 완성하시오.\n"정리된 책상은 학생들이 집중을 유지하는 것을 더 쉽게 만든다."\nAn organized desk [ ____________________________ ].\n<보기> it / focus / students / maintain / easier / for / makes / to\n<조건> 1. 가목적어 it 구문을 활용할 것  2. <보기>의 단어를 모두 한 번씩만 사용할 것 (8단어)',
+                koreanInstruction: '정리된 책상은 학생들이 집중을 유지하는 것을 더 쉽게 만든다. (<보기> 8단어 배열, 가목적어 it 활용)',
+                givenWords: ['it', 'focus', 'students', 'maintain', 'easier', 'for', 'makes', 'to'],
+                conditions: ['가목적어 it 구문을 활용할 것', '<보기>의 단어를 모두 한 번씩만 사용할 것 (8단어)'],
+                summaryKorean:
+                  '주어진 문맥 틀 뒤에서 5형식 가목적어(it) · 의미상 주어(for students) · 진목적어(to maintain focus) 구조를 정확히 배열하는 한·영 혼합 서술형입니다.',
+                problemSection: null,
+                writingSection: {
+                  writingType: '한·영 혼합 조건부 어순 배열',
+                  koreanPrompt: '정리된 책상은 학생들이 집중을 유지하는 것을 더 쉽게 만든다.',
+                  contextTemplate: 'An organized desk [ ____________________________ ].',
+                  givenWords: ['it', 'focus', 'students', 'maintain', 'easier', 'for', 'makes', 'to'],
+                  conditions: ['가목적어 it 구문을 활용할 것', '<보기>의 단어를 모두 한 번씩만 사용할 것 (8단어)'],
+                  evidenceSentences: [1, 2],
+                  modelAnswer: 'makes it easier for students to maintain focus',
+                  alternativeAnswers: [],
+                  steps: [
+                    { stepNumber: 1, title: '1단계: 동사와 가목적어·목적보어 뼈대 잡기', englishDraft: 'makes it easier', explanation: '주어 An organized desk(3인칭 단수)에 맞춰 동사 makes를 두고, 가목적어 it과 목적격 보어 easier를 배치합니다.' },
+                    { stepNumber: 2, title: '2단계: to부정사의 의미상 주어 연결', englishDraft: 'for students', explanation: '"학생들이" 유지하는 것이므로 진목적어 앞에 "for + 목적격"인 for students를 둡니다.' },
+                    { stepNumber: 3, title: '3단계: 진목적어(to부정사구) 완성', englishDraft: 'to maintain focus', explanation: '"집중을 유지하는 것"에 해당하는 to maintain focus를 연결합니다.' },
+                    { stepNumber: 4, title: '4단계: <조건> 단어 수·문맥 연결 검산', englishDraft: 'makes it easier for students to maintain focus', explanation: '<보기> 8단어를 중복/누락 없이 모두 사용했고 앞 주어 An organized desk와 자연스럽게 이어집니다.' }
+                  ],
+                  deductionPoints: [
+                    '가목적어 it을 빠뜨리고 makes easier로 쓰면 감점됩니다.',
+                    '의미상 주어 전치사 for를 of나 to로 잘못 쓰지 않도록 주의하세요.',
+                    '빈칸 문맥에 이미 주어(An organized desk)가 있으므로 답안에 주어를 중복 작성하지 마세요.'
+                  ]
+                },
+                sentences: [
+                  {
+                    index: 1,
+                    original: 'Many students believe willpower alone determines their study habits.',
+                    chunked: 'Many students believe / willpower alone determines their study habits.',
+                    literalTranslation: '많은 학생들은 믿는다 / 의지력만이 그들의 공부 습관을 결정한다고.',
+                    naturalTranslation: '많은 학생들은 의지력만으로 공부 습관이 결정된다고 믿는다.',
+                    grammarPoints: [{ pointTitle: '접속사 that 생략', targetPhrase: 'believe (that) willpower', explanation: '목적절을 이끄는 명사절 접속사 that이 생략되었습니다.' }]
+                  },
+                  {
+                    index: 2,
+                    original: 'Yet behavioral research shows that small adjustments to our surroundings shape daily choices.',
+                    chunked: 'Yet behavioral research shows / that small adjustments to our surroundings / shape daily choices.',
+                    literalTranslation: '그러나 행동 연구는 보여준다 / 우리 주변 환경의 작은 변화가 / 일상적 선택을 형성한다는 것을.',
+                    naturalTranslation: '하지만 행동 연구에 따르면 주변 환경의 작은 변화가 매일의 선택을 좌우한다.',
+                    grammarPoints: [{ pointTitle: '주어-동사 수일치', targetPhrase: 'small adjustments ... shape', explanation: '전치사구(to our surroundings)를 걷어내면 복수 주어 adjustments가 남으므로 복수 동사 shape를 씁니다.' }]
+                  }
+                ],
+                vocabulary: [
+                  { id: 'v5', word: 'willpower', partOfSpeech: 'n.', meaning: '의지력', synonyms: ['determination', 'resolve'], antonyms: [], exampleInPassage: 'willpower alone determines', memorized: false },
+                  { id: 'v6', word: 'adjustment', partOfSpeech: 'n.', meaning: '조정, 변화', synonyms: ['modification', 'change'], antonyms: [], exampleInPassage: 'small adjustments to our surroundings', memorized: false },
+                  { id: 'v7', word: 'maintain', partOfSpeech: 'v.', meaning: '유지하다', synonyms: ['keep', 'sustain'], antonyms: ['abandon'], exampleInPassage: 'to maintain focus', memorized: false }
+                ]
+              }
+            },
+            {
+              id: 'sample-kor-3',
+              createdAt: now - 43200000,
+              updatedAt: now - 43200000,
+              title: '한국어 제시문 조건부 영작: 관계대명사 what',
+              sourceTag: '예시 · 중3/고1 서술형',
+              languageFormat: 'korean',
+              postType: 'writing',
+              studyStatus: 'mastered',
+              imageDataUrls: [],
+              solvePreference: 'beginner',
+              solveRequestNote: '',
+              userMemo: 'what = the thing which (~하는 것), 단수 취급!',
+              userSelectedChoice: null,
+              writingAttempts: [],
+              followUpHistory: [],
+              isSample: true,
+              analysis: {
+                title: '한국어 제시문 조건부 영작: 관계대명사 what',
+                languageFormat: 'korean',
+                detectedPostType: 'writing',
+                extractedText:
+                  '우리말 뜻에 맞도록 <조건>에 따라 완전한 영어 문장으로 영작하시오.\n"진정으로 중요한 것은 네가 얼마나 빨리 끝내느냐가 아니라 얼마나 꼼꼼히 확인하느냐이다."\n<보기> matter, fast, carefully, check\n<조건> 1. 관계대명사 what을 문두에 사용할 것  2. not A but B 구문을 포함할 것  3. 필요시 단어를 추가·변형할 것',
+                koreanInstruction: '진정으로 중요한 것은 네가 얼마나 빨리 끝내느냐가 아니라 얼마나 꼼꼼히 확인하느냐이다.',
+                givenWords: ['matter', 'fast', 'carefully', 'check'],
+                conditions: ['관계대명사 what을 문두에 사용할 것', 'not A but B 구문을 포함할 것', '필요시 단어를 추가·변형할 것'],
+                summaryKorean:
+                  '선행사를 포함하는 관계대명사 what으로 주어절을 만들고, 간접의문문 2개를 not A but B로 병렬 연결하는 한국어 서술형 영작 문제입니다.',
+                problemSection: null,
+                writingSection: {
+                  writingType: '한국어 제시문 조건부 영작',
+                  koreanPrompt: '진정으로 중요한 것은 네가 얼마나 빨리 끝내느냐가 아니라 얼마나 꼼꼼히 확인하느냐이다.',
+                  contextTemplate: '',
+                  givenWords: ['matter', 'fast', 'carefully', 'check'],
+                  conditions: ['관계대명사 what을 문두에 사용할 것', 'not A but B 구문을 포함할 것', '필요시 단어를 추가·변형할 것'],
+                  evidenceSentences: [],
+                  modelAnswer: 'What truly matters is not how fast you finish, but how carefully you check.',
+                  alternativeAnswers: ['What really matters is not how fast you finish but how carefully you check it.'],
+                  steps: [
+                    { stepNumber: 1, title: '1단계: 주어절("진정으로 중요한 것") 만들기', englishDraft: 'What truly matters', explanation: '"~하는 것"은 what으로 시작하며, 동사 matter는 단수 취급해 matters로 변형합니다.' },
+                    { stepNumber: 2, title: '2단계: 단수 be동사 연결', englishDraft: 'What truly matters is', explanation: 'what절 주어는 단수이므로 is를 사용합니다.' },
+                    { stepNumber: 3, title: '3단계: not A but B 간접의문문 A 작성', englishDraft: 'not how fast you finish,', explanation: '"얼마나 빨리 ~하는지"는 [의문사 + 주어 + 동사] 어순인 how fast you finish로 씁니다.' },
+                    { stepNumber: 4, title: '4단계: 병렬 구조 B 완성 및 검산', englishDraft: 'What truly matters is not how fast you finish, but how carefully you check.', explanation: 'but 뒤에도 동일한 간접의문문 어순(how carefully you check)을 맞춰 완성합니다.' }
+                  ],
+                  deductionPoints: [
+                    'What절 뒤 동사에 -s를 빼먹어 What truly matter로 쓰지 않도록 주의하세요.',
+                    '간접의문문에서 how fast do you finish처럼 의문문 어순으로 쓰면 감점됩니다.'
+                  ]
+                },
+                sentences: [
+                  {
+                    index: 1,
+                    original: 'What truly matters is not how fast you finish, but how carefully you check.',
+                    chunked: 'What truly matters / is / not how fast you finish, / but how carefully you check.',
+                    literalTranslation: '진정으로 중요한 것은 / ~이다 / 네가 얼마나 빨리 끝내는지가 아니라 / 네가 얼마나 꼼꼼히 확인하는지이다.',
+                    naturalTranslation: '진정으로 중요한 것은 네가 얼마나 빨리 끝내느냐가 아니라 얼마나 꼼꼼히 확인하느냐이다.',
+                    grammarPoints: [
+                      { pointTitle: '관계대명사 what절 주어', targetPhrase: 'What truly matters is', explanation: '선행사를 포함한 what절이 주어일 때 보통 단수 동사(is)와 짝을 이룹니다.' },
+                      { pointTitle: 'not A but B 병렬 구조', targetPhrase: 'not how fast you finish, but how carefully you check', explanation: 'A와 B 자리에 동일한 형태의 간접의문문(how + 부사 + 주어 + 동사)이 나란히 옵니다.' }
+                    ]
+                  }
+                ],
+                vocabulary: [
+                  { id: 'v8', word: 'matter', partOfSpeech: 'v.', meaning: '중요하다, 문제가 되다', synonyms: ['count', 'be important'], antonyms: [], exampleInPassage: 'What truly matters is', memorized: true },
+                  { id: 'v9', word: 'carefully', partOfSpeech: 'adv.', meaning: '주의 깊게, 꼼꼼히', synonyms: ['thoroughly', 'attentively'], antonyms: ['carelessly'], exampleInPassage: 'how carefully you check', memorized: false }
+                ]
+              }
+            }
+          ];
+        }
+
+        function loadPosts() {
+          var raw = safeGetItem(STORAGE_KEY);
+          if (raw) {
+            try {
+              var parsed = JSON.parse(raw);
+              if (Array.isArray(parsed)) return parsed;
+            } catch (e) {}
+          }
+          if (!safeGetItem(SEED_KEY)) {
+            var samples = createSamplePosts();
+            safeSetItem(STORAGE_KEY, JSON.stringify(samples));
+            safeSetItem(SEED_KEY, '1');
+            return samples;
+          }
+          return [];
+        }
+
+        function savePosts(list) {
+          safeSetItem(STORAGE_KEY, JSON.stringify(list));
+        }
+
+        function loadChat() {
+          var raw = safeGetItem(CHAT_STORAGE_KEY);
+          if (!raw) return [];
+          try {
+            var parsed = JSON.parse(raw);
+            return Array.isArray(parsed) ? parsed : [];
+          } catch (e) {
+            return [];
+          }
+        }
+
+        function saveChat(msgs) {
+          safeSetItem(CHAT_STORAGE_KEY, JSON.stringify(msgs.slice(-40)));
+        }
+
+        // Client-side deterministic analyzer (works 100% offline / file:// / static Vercel)
+        function splitIntoChunked(sentence) {
+          var clean = sentence.trim();
+          if (!clean) return '';
+          var words = clean.split(/\s+/);
+          if (words.length <= 5) return clean;
+          var breakTokens = {
+            that: true, which: true, who: true, whom: true, whose: true, where: true, when: true,
+            because: true, although: true, though: true, while: true, since: true, unless: true,
+            if: true, whether: true, until: true, before: true, after: true, whereas: true,
+            but: true, yet: true, so: true, however: true, therefore: true
+          };
+          var out = [];
+          var chunkCount = 0;
+          for (var i = 0; i < words.length; i++) {
+            var w = words[i];
+            var bare = w.toLowerCase().replace(/[^a-z]/g, '');
+            if (i > 2 && chunkCount >= 3 && breakTokens[bare]) {
+              out.push('/');
+              chunkCount = 0;
+            }
+            out.push(w);
+            chunkCount++;
+            if (/,|;|—/.test(w) && i < words.length - 2 && chunkCount >= 2) {
+              out.push('/');
+              chunkCount = 0;
+            }
+          }
+          return out.join(' ').replace(/\s*\/\s*\/\s*/g, ' / ');
+        }
+
+        function detectGrammarPatterns(sentence) {
+          var points = [];
+          if (/\bnot only\b[\s\S]*\bbut\b/i.test(sentence)) {
+            points.push({ pointTitle: 'not only A but (also) B', targetPhrase: 'not only ... but', explanation: '상관접속사 구문으로 A뿐만 아니라 B도라는 의미를 강조합니다. not only가 문두에 오면 도치가 일어납니다.' });
+          }
+          if (/\b(which|that|who|whom|whose)\b/i.test(sentence)) {
+            var rel = sentence.match(/\b(which|that|who|whom|whose)\b/i);
+            points.push({ pointTitle: '관계대명사 / 접속사절', targetPhrase: rel ? rel[0] : '관계사', explanation: '앞선 명사(선행사)를 수식하거나 문장의 목적어·주어절을 연결하는 핵심 구조입니다.' });
+          }
+          if (/\b(is|are|was|were|be|been)\s+[a-z]+(?:ed|en)\b/i.test(sentence)) {
+            var pas = sentence.match(/\b(is|are|was|were|be|been)\s+[a-z]+(?:ed|en)\b/i);
+            points.push({ pointTitle: '수동태 (be + p.p.)', targetPhrase: pas ? pas[0] : 'be + p.p.', explanation: '주어가 동작의 대상이 되어 "~되다/당하다"로 해석됩니다.' });
+          }
+          if (/\bto\s+[a-z]{2,}\b/i.test(sentence) && points.length < 2) {
+            var inf = sentence.match(/\bto\s+[a-z]{2,}\b/i);
+            points.push({ pointTitle: 'to부정사구', targetPhrase: inf ? inf[0] : 'to + 동사원형', explanation: '문맥에 따라 명사적(~하는 것), 형용사적(~할), 부사적(~하기 위해) 용법으로 해석됩니다.' });
+          }
+          if (/\b(although|though|while|because|since|unless)\b/i.test(sentence) && points.length < 2) {
+            var conj = sentence.match(/\b(although|though|while|because|since|unless)\b/i);
+            points.push({ pointTitle: '부사절 접속사', targetPhrase: conj ? conj[0] : '접속사', explanation: '양보, 이유, 조건 등의 논리 관계를 이끄는 종속절 시작 표지입니다.' });
+          }
+          return points.slice(0, 2);
+        }
+
+        function extractVocabCandidates(text) {
+          var stop = {
+            about:1, above:1, after:1, again:1, against:1, almost:1, alone:1, along:1, already:1, also:1,
+            although:1, always:1, among:1, another:1, answer:1, around:1, because:1, become:1, before:1,
+            being:1, below:1, between:1, cannot:1, could:1, during:1, every:1, first:1, found:1, from:1,
+            great:1, however:1, into:1, large:1, many:1, might:1, more:1, most:1, much:1, must:1,
+            never:1, only:1, other:1, people:1, question:1, rather:1, really:1, should:1, since:1,
+            some:1, something:1, still:1, study:1, students:1, student:1, such:1, than:1, that:1,
+            their:1, them:1, then:1, there:1, these:1, they:1, thing:1, things:1, think:1, this:1,
+            those:1, though:1, through:1, under:1, until:1, using:1, very:1, what:1, when:1, where:1,
+            which:1, while:1, with:1, without:1, would:1, write:1, years:1, your:1
+          };
+          var tokens = (text.match(/\b[A-Za-z]{6,}\b/g) || []);
+          var seen = {};
+          var list = [];
+          for (var i = 0; i < tokens.length; i++) {
+            var raw = tokens[i];
+            var lower = raw.toLowerCase();
+            if (seen[lower] || stop[lower]) continue;
+            seen[lower] = true;
+            var pos = /ly$/i.test(lower) ? 'adv.' : /(tion|ment|ness|ity|ence|ance)$/i.test(lower) ? 'n.' : /(ive|ous|ful|able|ible|al|ic)$/i.test(lower) ? 'adj.' : 'v./n.';
+            var esc = new RegExp('[^.!?]*\\b' + raw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b[^.!?]*', 'i');
+            var exMatch = text.match(esc);
+            list.push({
+              id: 'v-' + Date.now() + '-' + i,
+              word: lower,
+              partOfSpeech: pos,
+              meaning: '(내 단어 뜻 메모 가능)',
+              synonyms: [],
+              antonyms: [],
+              exampleInPassage: exMatch ? exMatch[0].trim().slice(0, 90) : raw,
+              memorized: false
+            });
+            if (list.length >= 8) break;
+          }
+          return list;
+        }
+
+        function analyzeLocally(rawText, opts) {
+          var text = (rawText || '').trim();
+          var hasHangul = /[가-힣]/.test(text);
+          var hasEnglish = /[A-Za-z]{3,}/.test(text);
+          var languageFormat = hasHangul && hasEnglish ? 'mixed' : hasHangul ? 'korean' : 'english';
+
+          // Extract <보기> and <조건>
+          var givenWords = [];
+          var bogiMatch = text.match(/<보기>\s*([^\n]+)/);
+          if (bogiMatch) {
+            givenWords = bogiMatch[1].split(/[,/·]+/).map(function (s) { return s.trim(); }).filter(Boolean);
+          }
+          var conditions = [];
+          var condBlockMatch = text.match(/<조건>([\s\S]*?)(?:\n\n|$)/);
+          if (condBlockMatch) {
+            conditions = condBlockMatch[1]
+              .split(/\n|(?=\d+\.)/)
+              .map(function (s) { return s.trim(); })
+              .filter(function (s) { return s.length > 2; });
+          }
+
+          // Extract choices ①~⑤ or (1)~(5)
+          var choices = [];
+          var choiceLines = text.match(/(?:^|\n)\s*(?:[①②③④⑤]|\([1-5]\)|[1-5]\))\s+[^\n]+/g) || [];
+          for (var c = 0; c < choiceLines.length; c++) {
+            var line = choiceLines[c].trim();
+            var lblMatch = line.match(/^([①②③④⑤]|\([1-5]\)|[1-5]\))\s+([\s\S]+)$/);
+            if (lblMatch) {
+              choices.push({
+                label: lblMatch[1],
+                text: lblMatch[2].trim(),
+                isCorrect: false,
+                explanation: '본문 단서 문장과 대조해 정오답 근거를 메모해 보세요.'
+              });
+            }
+          }
+
+          // Determine post type
+          var detectedType = opts.requestedType !== 'auto'
+            ? opts.requestedType
+            : (givenWords.length > 0 || conditions.length > 0 || /영작|서술형|배열|우리말/.test(text))
+              ? 'writing'
+              : choices.length >= 2
+                ? 'problem'
+                : 'passage';
+
+          // Split English sentences
+          var englishOnlyBlocks = text
+            .replace(/(?:^|\n)\s*(?:[①②③④⑤]|\([1-5]\)|[1-5]\))\s+[^\n]+/g, ' ')
+            .replace(/<보기>[^\n]*/g, ' ')
+            .replace(/<조건>[\s\S]*?(?=\n\n|$)/g, ' ');
+          var rawSentences = englishOnlyBlocks.match(/[A-Z][^.!?]*[.!?]/g) || [];
+          var sentences = [];
+          for (var s = 0; s < rawSentences.length; s++) {
+            var orig = rawSentences[s].replace(/\s+/g, ' ').trim();
+            if (orig.split(/\s+/).length < 3) continue;
+            sentences.push({
+              index: sentences.length + 1,
+              original: orig,
+              chunked: splitIntoChunked(orig),
+              literalTranslation: '(직독직해 끊어읽기 구획이 자동 분리되었습니다 — 쉼표/접속사 단위로 해석을 정리해 보세요)',
+              naturalTranslation: '(자연스러운 한국어 해석을 노트 메모에 정리해 보세요)',
+              grammarPoints: detectGrammarPatterns(orig)
+            });
+          }
+
+          var firstLine = text.split('\n').map(function (l) { return l.trim(); }).filter(Boolean)[0] || '';
+          var title = opts.sourceTag ? opts.sourceTag : (firstLine ? firstLine.slice(0, 26) : '영어 학습 노트');
+
+          var koreanLines = text.split('\n').filter(function (l) { return /[가-힣]/.test(l) && !/^[①②③④⑤]/.test(l.trim()); });
+          var koreanInstruction = koreanLines.slice(0, 2).join(' ').trim();
+
+          return {
+            title: title,
+            languageFormat: languageFormat,
+            detectedPostType: detectedType,
+            extractedText: text || '(첨부된 사진 학습 노트 — 왼쪽 사진을 보며 오른쪽 메모와 코치 채팅으로 정리해 보세요.)',
+            koreanInstruction: koreanInstruction,
+            givenWords: givenWords,
+            conditions: conditions,
+            summaryKorean: opts.solveNote
+              ? '요청하신 풀이 방식(' + opts.solveNote + ')에 맞춰 원문 구문·조건·어휘 노트를 구성했습니다.'
+              : '입력하신 지문과 조건을 기준으로 문장 끊어읽기, 핵심 문법 패턴, 주요 어휘를 자동 정리했습니다.',
+            problemSection: detectedType === 'problem'
+              ? {
+                  questionType: choices.length > 0 ? '객관식 문제 풀이' : '문제 풀이 노트',
+                  correctAnswer: choices[0] ? choices[0].label : '①',
+                  answerSummary: '선지를 선택한 뒤 근거 문장을 하이라이트하여 풀이 논리를 검증해 보세요.',
+                  evidenceSentences: sentences.length > 0 ? [1] : [],
+                  choices: choices
+                }
+              : null,
+            writingSection: detectedType === 'writing'
+              ? {
+                  writingType: '조건부 서술형 영작',
+                  koreanPrompt: koreanInstruction || '주어진 <보기>와 <조건>에 맞게 영어 문장을 완성하세요.',
+                  contextTemplate: '',
+                  givenWords: givenWords,
+                  conditions: conditions,
+                  evidenceSentences: sentences.length > 0 ? [1] : [],
+                  modelAnswer: '(내 영작 연습 탭에서 직접 문장을 작성해 <보기>·<조건> 충족 여부를 바로 점검해 보세요)',
+                  alternativeAnswers: [],
+                  steps: [
+                    { stepNumber: 1, title: '1단계: 주어·동사 핵심 뼈대 잡기', englishDraft: 'Subject + Verb (+ Object)', explanation: '우리말 핵심 서술어에 해당하는 동사와 시제를 먼저 결정합니다.' },
+                    { stepNumber: 2, title: '2단계: <보기> 단어 역할 배분', englishDraft: givenWords.length ? givenWords.join(' / ') : '주어진 어휘 확인', explanation: '주어진 단어가 명사·동사·수식어 중 어느 자리에 들어갈지 분류합니다.' },
+                    { stepNumber: 3, title: '3단계: <조건> 문법·어형 변형 적용', englishDraft: conditions.length ? conditions.join(' | ') : '시제·수일치·태 점검', explanation: '필요한 어형 변화와 필수 구문 조건을 문장에 반영합니다.' },
+                    { stepNumber: 4, title: '4단계: 최종 문장 어순 및 철자 검산', englishDraft: 'Check word count & punctuation', explanation: '단어 수, 대소문자, 마침표까지 최종 확인합니다.' }
+                  ],
+                  deductionPoints: [
+                    '3인칭 단수 현재 -s 및 수동태/시제 일치 누락 주의',
+                    '<보기> 단어 어형 변형 여부 및 단어 수 제한 확인'
+                  ]
+                }
+              : null,
+            sentences: sentences,
+            vocabulary: extractVocabCandidates(text)
+          };
+        }
+
+        // Image utilities (works offline / file://)
+        function readFileAsDataUrl(file) {
+          return new Promise(function (resolve, reject) {
+            var reader = new FileReader();
+            reader.onload = function () { resolve(reader.result); };
+            reader.onerror = function () { reject(new Error('이미지 파일을 읽지 못했습니다.')); };
+            reader.readAsDataURL(file);
+          });
+        }
+
+        function loadImg(src) {
+          return new Promise(function (resolve, reject) {
+            var img = new Image();
+            img.onload = function () { resolve(img); };
+            img.onerror = function () { reject(new Error('이미지를 불러오지 못했습니다.')); };
+            img.src = src;
+          });
+        }
+
+        function rotateDataUrl(src, deg) {
+          return loadImg(src).then(function (img) {
+            var canvas = document.createElement('canvas');
+            canvas.width = img.naturalHeight;
+            canvas.height = img.naturalWidth;
+            var ctx = canvas.getContext('2d');
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.rotate((deg * Math.PI) / 180);
+            ctx.drawImage(img, -img.naturalWidth / 2, -img.naturalHeight / 2);
+            return canvas.toDataURL('image/jpeg', 0.9);
+          });
+        }
+
+        function compressAndCrop(src, crop, maxDim) {
+          return loadImg(src).then(function (img) {
+            var sx = crop ? Math.max(0, Math.round(crop.x * img.naturalWidth)) : 0;
+            var sy = crop ? Math.max(0, Math.round(crop.y * img.naturalHeight)) : 0;
+            var sw = crop ? Math.max(20, Math.round(crop.width * img.naturalWidth)) : img.naturalWidth;
+            var sh = crop ? Math.max(20, Math.round(crop.height * img.naturalHeight)) : img.naturalHeight;
+            sw = Math.min(sw, img.naturalWidth - sx);
+            sh = Math.min(sh, img.naturalHeight - sy);
+            var scale = Math.min(1, maxDim / Math.max(sw, sh));
+            var tw = Math.max(1, Math.round(sw * scale));
+            var th = Math.max(1, Math.round(sh * scale));
+            var canvas = document.createElement('canvas');
+            canvas.width = tw;
+            canvas.height = th;
+            var ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, tw, th);
+            ctx.drawImage(img, sx, sy, sw, sh, 0, 0, tw, th);
+            return canvas.toDataURL('image/jpeg', 0.84);
+          });
+        }
+
+        // Application State
+        var state = {
+          posts: loadPosts(),
+          activeView: 'feed',
+          selectedPostId: null,
+          searchQuery: '',
+          typeFilter: 'all',
+          activeTab: 'literal',
+          leftMode: 'photo',
+          activePhotoIndex: 0,
+          zoom: 1,
+          highlightEvidence: true,
+          literalMode: 'parallel',
+          hideModelAnswer: false,
+          choiceDraft: null,
+          revealedProblem: false,
+          writingDraft: '',
+          followUpStyle: 'balanced',
+          confirmDelete: false,
+          vocabFilter: 'all',
+          vocabHideMeanings: false,
+          revealedVocab: {},
+          backupNotice: null,
+          confirmClearAll: false,
+          // Snap Modal state
+          snapOpen: false,
+          snapTab: 'photo',
+          snapPhotos: [],
+          snapActivePhotoIdx: 0,
+          snapDragStart: null,
+          snapDragging: false,
+          snapStyle: 'balanced',
+          // Tutor Drawer state
+          tutorOpen: false,
+          tutorRole: 'tutor',
+          tutorStyle: 'balanced',
+          tutorCustomOpen: true,
+          tutorCondition: '',
+          tutorMessages: loadChat()
+        };
+
+        if (state.posts.length > 0) {
+          state.selectedPostId = state.posts[0].id;
+        }
+
+        function getFilteredPosts() {
+          var q = state.searchQuery.trim().toLowerCase();
+          return state.posts.filter(function (p) {
+            if (state.activeView === 'review' && p.studyStatus !== 'review_needed') return false;
+            if (state.typeFilter !== 'all' && p.postType !== state.typeFilter) return false;
+            if (!q) return true;
+            return (
+              (p.title || '').toLowerCase().indexOf(q) !== -1 ||
+              (p.sourceTag || '').toLowerCase().indexOf(q) !== -1 ||
+              (p.analysis.extractedText || '').toLowerCase().indexOf(q) !== -1 ||
+              (p.analysis.vocabulary || []).some(function (v) { return v.word.toLowerCase().indexOf(q) !== -1; })
+            );
+          });
+        }
+
+        function getSelectedPost() {
+          var filtered = getFilteredPosts();
+          var pool = filtered.length > 0 ? filtered : state.posts;
+          for (var i = 0; i < pool.length; i++) {
+            if (pool[i].id === state.selectedPostId) return pool[i];
+          }
+          return filtered[0] || null;
+        }
+
+        function selectPost(postId) {
+          state.selectedPostId = postId;
+          var post = getSelectedPost();
+          if (post) {
+            var imgs = post.imageDataUrls || [];
+            state.leftMode = imgs.length > 0 ? 'photo' : 'text';
+            state.activePhotoIndex = 0;
+            state.zoom = 1;
+            state.choiceDraft = post.userSelectedChoice || null;
+            state.revealedProblem = Boolean(post.userSelectedChoice);
+            state.writingDraft = '';
+            state.confirmDelete = false;
+            if (post.postType === 'writing' && post.analysis.writingSection) state.activeTab = 'writing_guide';
+            else if (post.analysis.problemSection) state.activeTab = 'answer';
+            else state.activeTab = 'literal';
+          }
+          render();
+        }
+
+        if (state.posts.length > 0) {
+          var initPost = state.posts[0];
+          state.leftMode = (initPost.imageDataUrls && initPost.imageDataUrls.length > 0) ? 'photo' : 'text';
+          state.activeTab = (initPost.postType === 'writing' && initPost.analysis.writingSection)
+            ? 'writing_guide'
+            : (initPost.analysis.problemSection ? 'answer' : 'literal');
+          state.choiceDraft = initPost.userSelectedChoice || null;
+          state.revealedProblem = Boolean(initPost.userSelectedChoice);
+        }
+
+        function updatePostById(id, mutator) {
+          state.posts = state.posts.map(function (p) {
+            return p.id === id ? mutator(p) : p;
+          });
+          savePosts(state.posts);
+        }
+
+        function renderTopNav() {
+          var reviewCount = state.posts.filter(function (p) { return p.studyStatus === 'review_needed'; }).length;
+          var unmemCount = state.posts.reduce(function (sum, p) {
+            return sum + (p.analysis.vocabulary || []).filter(function (v) { return !v.memorized; }).length;
+          }, 0);
+
+          var items = [
+            { id: 'feed', label: '학습 피드' },
+            { id: 'review', label: reviewCount > 0 ? '오답·복습함 (' + reviewCount + ')' : '오답·복습함' },
+            { id: 'vocab', label: unmemCount > 0 ? '단어장 (' + unmemCount + ')' : '단어장' },
+            { id: 'backup', label: '백업·저장' }
+          ];
+
+          var desktopHtml = items.map(function (it) {
+            return '<button type="button" class="nav-btn ' + (state.activeView === it.id ? 'active' : '') + '" data-nav="' + it.id + '">' + escapeHtml(it.label) + '</button>';
+          }).join('');
+          document.getElementById('desktopNav').innerHTML = desktopHtml;
+
+          var mobileHtml = items.map(function (it) {
+            return '<button type="button" class="btn btn-sm ' + (state.activeView === it.id ? 'btn-dark' : 'btn-soft') + '" data-nav="' + it.id + '">' + escapeHtml(it.label) + '</button>';
+          }).join('');
+          document.getElementById('mobileNav').innerHTML = mobileHtml;
+        }
+
+        function renderFeedAndWorkspace() {
+          var filtered = getFilteredPosts();
+          var selected = getSelectedPost();
+
+          var sidebarHtml =
+            '<aside class="card sidebar">' +
+              '<div class="sidebar-head">' +
+                '<div class="sidebar-title-row">' +
+                  '<h2 class="sidebar-title">' + (state.activeView === 'review' ? '오답·복습 필요 노트' : '내 학습 피드') + '</h2>' +
+                  '<span class="tabular-nums" style="font-size:12px;color:var(--text-subtle)">총 ' + filtered.length + '건</span>' +
+                '</div>' +
+                '<input id="feedSearchInput" class="input-box" type="text" placeholder="제목, 출처, 단어 검색" value="' + escapeHtml(state.searchQuery) + '" />' +
+                '<div class="seg-grid-4">' +
+                  ['all:전체', 'problem:문제', 'writing:영작', 'passage:원문'].map(function (pair) {
+                    var parts = pair.split(':');
+                    return '<button type="button" class="seg-btn ' + (state.typeFilter === parts[0] ? 'active' : '') + '" data-typefilter="' + parts[0] + '">' + parts[1] + '</button>';
+                  }).join('') +
+                '</div>' +
+              '</div>' +
+              '<div class="feed-list">' +
+                (filtered.length === 0
+                  ? '<div style="padding:36px 16px;text-align:center;font-size:13px;color:var(--text-subtle)">표시할 학습 노트가 없습니다.</div>'
+                  : filtered.map(function (p) {
+                      var isSel = selected && p.id === selected.id;
+                      var subLabel = p.postType === 'writing'
+                        ? (p.analysis.writingSection ? p.analysis.writingSection.writingType : '영작 서술형')
+                        : p.postType === 'problem'
+                          ? (p.analysis.problemSection ? p.analysis.problemSection.questionType : '객관식 풀이')
+                          : '원문 독해';
+                      var photoCount = (p.imageDataUrls || []).length;
+                      var footRight = photoCount > 1 ? '사진 ' + photoCount + '장' : (p.sourceTag || '어휘 ' + (p.analysis.vocabulary || []).length);
+                      return '<button type="button" class="feed-item ' + (isSel ? 'selected' : '') + '" data-select-post="' + escapeHtml(p.id) + '">' +
+                        '<div class="feed-item-meta"><span>' + escapeHtml(getLangLabel(p.languageFormat) + ' · ' + subLabel) + '</span><span class="font-mono-tabular">' + formatShortDate(p.createdAt) + '</span></div>' +
+                        '<p class="feed-item-title">' + escapeHtml(p.title) + '</p>' +
+                        '<div class="feed-item-foot">' +
+                          (p.studyStatus === 'mastered'
+                            ? '<span class="status-ok">이해 완료</span>'
+                            : '<span class="status-review">복습 필요</span>') +
+                          '<span style="color:var(--text-subtle);font-size:11px">' + escapeHtml(footRight) + '</span>' +
+                        '</div>' +
+                      '</button>';
+                    }).join('')
+                ) +
+              '</div>' +
+            '</aside>';
+
+          var workspaceHtml = '';
+          if (!selected) {
+            workspaceHtml =
+              '<section class="card" style="padding:56px 24px;text-align:center">' +
+                '<h2 class="font-editorial" style="margin:0 0 8px;font-size:22px">첫 영어·한국어 노트를 등록해 보세요</h2>' +
+                '<p style="margin:0 0 18px;font-size:14px;color:var(--text-muted)">사진을 여러 장 올리거나 문제 텍스트를 입력해 바로 학습할 수 있습니다.</p>' +
+                '<button type="button" class="btn btn-primary" id="emptySnapBtn">새 문제·노트 등록</button>' +
+              '</section>';
+          } else {
+            var imgs = selected.imageDataUrls || [];
+            var hasProb = Boolean(selected.analysis.problemSection);
+            var hasWrit = Boolean(selected.analysis.writingSection);
+            var evSet = {};
+            var evList = (selected.analysis.problemSection && selected.analysis.problemSection.evidenceSentences) ||
+              (selected.analysis.writingSection && selected.analysis.writingSection.evidenceSentences) || [];
+            evList.forEach(function (n) { evSet[n] = true; });
+
+            var leftHtml = '<div class="ws-left">';
+            if (imgs.length > 0) {
+              leftHtml +=
+                '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">' +
+                  '<div style="display:flex;gap:6px">' +
+                    '<button type="button" class="btn btn-sm ' + (state.leftMode === 'photo' ? 'btn-dark' : 'btn-outline') + '" data-leftmode="photo">사진 보기 (' + imgs.length + ')</button>' +
+                    '<button type="button" class="btn btn-sm ' + (state.leftMode === 'text' ? 'btn-dark' : 'btn-outline') + '" data-leftmode="text">원문 텍스트</button>' +
+                  '</div>' +
+                  (state.leftMode === 'photo'
+                    ? '<div style="display:flex;gap:4px;align-items:center">' +
+                        '<button type="button" class="btn btn-soft btn-sm" id="zoomOutBtn">-</button>' +
+                        '<span class="font-mono-tabular" style="font-size:11px;min-width:40px;text-align:center">' + Math.round(state.zoom * 100) + '%</span>' +
+                        '<button type="button" class="btn btn-soft btn-sm" id="zoomInBtn">+</button>' +
+                      '</div>'
+                    : '') +
+                '</div>';
+            }
+
+            if (imgs.length > 0 && state.leftMode === 'photo') {
+              var curImg = imgs[Math.min(state.activePhotoIndex, imgs.length - 1)];
+              leftHtml +=
+                '<div class="photo-stage">' +
+                  '<img src="' + curImg + '" alt="첨부 문제 사진" style="transform:scale(' + state.zoom + ')" />' +
+                '</div>';
+              if (imgs.length > 1) {
+                leftHtml += '<div class="thumb-strip">' + imgs.map(function (src, idx) {
+                  return '<button type="button" class="thumb-btn ' + (idx === state.activePhotoIndex ? 'active' : '') + '" data-viewphoto="' + idx + '"><img src="' + src + '" alt="사진 ' + (idx + 1) + '" /><span>사진 ' + (idx + 1) + '</span></button>';
+                }).join('') + '</div>';
+              }
+            } else {
+              var sents = selected.analysis.sentences || [];
+              leftHtml +=
+                '<div style="display:flex;justify-content:space-between;align-items:center">' +
+                  '<span style="font-size:12px;font-weight:700;color:var(--text-muted)">추출 원문 · 문제</span>' +
+                  '<label style="font-size:12px;color:var(--text-muted);display:flex;align-items:center;gap:5px"><input type="checkbox" id="toggleEvidenceChk" ' + (state.highlightEvidence ? 'checked' : '') + ' /> 단서 문장 강조</label>' +
+                '</div>' +
+                '<div class="passage-box">' +
+                  (sents.length > 0 && selected.languageFormat === 'english'
+                    ? sents.map(function (s) {
+                        return '<span class="sentence-inline ' + (state.highlightEvidence && evSet[s.index] ? 'evidence' : '') + '">' + escapeHtml(s.original) + '</span> ';
+                      }).join('')
+                    : escapeHtml(selected.analysis.extractedText)) +
+                '</div>';
+            }
+
+            leftHtml +=
+              '<div>' +
+                '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">' +
+                  '<label for="memoTextarea" style="font-size:12px;font-weight:700;color:var(--text-muted)">내 오답 · 복습 메모</label>' +
+                  '<span id="memoSavedTag" style="font-size:11px;color:var(--emerald);display:none">저장됨</span>' +
+                '</div>' +
+                '<textarea id="memoTextarea" rows="3" class="input-box" placeholder="헷갈린 문법, 틀린 이유, 시험 전 꼭 볼 포인트를 메모하세요.">' + escapeHtml(selected.userMemo || '') + '</textarea>' +
+              '</div>' +
+            '</div>';
+
+            // Right tabs
+            var tabs = [];
+            if (hasProb) tabs.push({ id: 'answer', label: '문제 풀이' });
+            if (hasWrit) tabs.push({ id: 'writing_guide', label: '영작 빌드업' });
+            if (hasWrit) tabs.push({ id: 'writing_grade', label: '내 영작 연습' });
+            tabs.push({ id: 'literal', label: '직독직해' });
+            tabs.push({ id: 'grammar', label: '핵심 구문' });
+            tabs.push({ id: 'vocab', label: '단어 (' + (selected.analysis.vocabulary || []).length + ')' });
+
+            var tabBody = '';
+            if (state.activeTab === 'answer' && selected.analysis.problemSection) {
+              var ps = selected.analysis.problemSection;
+              tabBody +=
+                '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">' +
+                  '<span style="font-size:13px;font-weight:700">' + escapeHtml(ps.questionType) + '</span>' +
+                  '<div style="display:flex;gap:8px">' +
+                    (state.choiceDraft && !state.revealedProblem
+                      ? '<button type="button" class="btn btn-primary btn-sm" id="checkChoiceBtn">정답 확인하기</button>'
+                      : '') +
+                    '<button type="button" class="btn btn-outline btn-sm" id="toggleProblemRevealBtn">' + (state.revealedProblem ? '해설 가리기' : '정답·해설 바로 보기') + '</button>' +
+                  '</div>' +
+                '</div>';
+
+              if (state.revealedProblem) {
+                tabBody +=
+                  '<div class="subpanel blue">' +
+                    '<div style="font-size:13px;font-weight:700;color:#1e3a8a;margin-bottom:4px">정답: ' + escapeHtml(ps.correctAnswer) + '</div>' +
+                    '<p style="margin:0;font-size:13px;line-height:1.6">' + escapeHtml(ps.answerSummary) + '</p>' +
+                  '</div>';
+              }
+
+              tabBody += '<div style="display:flex;flex-direction:column;gap:8px">' +
+                (ps.choices || []).map(function (ch) {
+                  var isPicked = state.choiceDraft === ch.label;
+                  var cls = 'choice-card';
+                  if (state.revealedProblem) {
+                    if (ch.isCorrect) cls += ' correct';
+                    else if (isPicked) cls += ' wrong';
+                  } else if (isPicked) {
+                    cls += ' selected';
+                  }
+                  return '<button type="button" class="' + cls + '" data-pick-choice="' + escapeHtml(ch.label) + '">' +
+                    '<div style="display:flex;justify-content:space-between;gap:8px;font-size:13.5px;font-weight:600">' +
+                      '<span>' + escapeHtml(ch.label + ' ' + ch.text) + '</span>' +
+                      (state.revealedProblem && ch.isCorrect ? '<span style="color:var(--emerald)">정답</span>' : '') +
+                    '</div>' +
+                    (state.revealedProblem ? '<div style="font-size:12.5px;color:var(--text-muted);line-height:1.5">' + escapeHtml(ch.explanation) + '</div>' : '') +
+                  '</button>';
+                }).join('') +
+              '</div>';
+            } else if (state.activeTab === 'writing_guide' && selected.analysis.writingSection) {
+              var ws = selected.analysis.writingSection;
+              tabBody +=
+                '<div class="subpanel soft">' +
+                  '<div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:4px">영작 제시문</div>' +
+                  '<p style="margin:0;font-size:14px;font-weight:600">' + escapeHtml(ws.koreanPrompt) + '</p>' +
+                  (ws.contextTemplate ? '<p class="english-mono" style="margin:8px 0 0;padding:8px 10px;background:#fff;border:1px solid var(--border);border-radius:7px">' + escapeHtml(ws.contextTemplate) + '</p>' : '') +
+                  (ws.givenWords.length ? '<div style="margin-top:8px;font-size:12px"><strong>&lt;보기&gt;</strong> ' + escapeHtml(ws.givenWords.join(', ')) + '</div>' : '') +
+                  (ws.conditions.length ? '<div style="margin-top:6px;font-size:12px"><strong>&lt;조건&gt;</strong><ul style="margin:4px 0 0 18px;padding:0">' + ws.conditions.map(function (c) { return '<li>' + escapeHtml(c) + '</li>'; }).join('') + '</ul></div>' : '') +
+                '</div>' +
+                '<div style="display:flex;flex-direction:column;gap:8px">' +
+                  (ws.steps || []).map(function (st) {
+                    return '<div class="step-card">' +
+                      '<div style="font-size:12px;font-weight:700;color:var(--primary)">' + escapeHtml(st.title) + '</div>' +
+                      '<div class="english-mono" style="padding:8px 10px;background:#f8fafc;border-radius:6px;border:1px solid var(--border)">' + escapeHtml(st.englishDraft) + '</div>' +
+                      '<p style="margin:0;font-size:12.5px;color:var(--text-muted);line-height:1.5">' + escapeHtml(st.explanation) + '</p>' +
+                    '</div>';
+                  }).join('') +
+                '</div>' +
+                '<div class="subpanel emerald">' +
+                  '<div style="display:flex;justify-content:space-between;align-items:center">' +
+                    '<span style="font-size:12px;font-weight:700;color:var(--emerald)">모범 답안</span>' +
+                    '<button type="button" class="btn btn-soft btn-sm" id="toggleModelHideBtn">' + (state.hideModelAnswer ? '답안 보기' : '스스로 암기 가리기') + '</button>' +
+                  '</div>' +
+                  '<div class="english-mono" style="margin-top:6px;font-weight:700">' + (state.hideModelAnswer ? '(직접 머릿속으로 완성한 뒤 답안 보기를 눌러 확인하세요)' : escapeHtml(ws.modelAnswer)) + '</div>' +
+                '</div>' +
+                (ws.deductionPoints && ws.deductionPoints.length
+                  ? '<div class="subpanel amber"><strong style="font-size:12px;color:var(--amber)">내신 감점 주의 포인트</strong><ul style="margin:6px 0 0 18px;padding:0;font-size:12.5px;line-height:1.5">' +
+                    ws.deductionPoints.map(function (d) { return '<li>' + escapeHtml(d) + '</li>'; }).join('') +
+                    '</ul></div>'
+                  : '');
+            } else if (state.activeTab === 'writing_grade' && selected.analysis.writingSection) {
+              var wg = selected.analysis.writingSection;
+              var attempts = selected.writingAttempts || [];
+              tabBody +=
+                '<div class="subpanel soft" style="display:flex;flex-direction:column;gap:10px">' +
+                  '<div style="font-size:13px;font-weight:700">직접 영작하고 조건별 자가 점검하기</div>' +
+                  '<p style="margin:0;font-size:12.5px;color:var(--text-muted)">' + escapeHtml(wg.koreanPrompt) + '</p>' +
+                  '<textarea id="writingPracticeInput" rows="3" class="input-box" placeholder="여기에 직접 영어 문장이나 빈칸 답안을 입력해 보세요.">' + escapeHtml(state.writingDraft) + '</textarea>' +
+                  '<div style="display:flex;justify-content:space-between;align-items:center">' +
+                    '<span class="font-mono-tabular" style="font-size:12px;color:var(--text-subtle)">단어 수: ' + (state.writingDraft.trim() ? state.writingDraft.trim().split(/\s+/).length : 0) + ' words</span>' +
+                    '<button type="button" class="btn btn-primary btn-sm" id="checkWritingBtn">조건 · 모범답안 대조 체크</button>' +
+                  '</div>' +
+                '</div>' +
+                (attempts.length > 0
+                  ? attempts.map(function (at) {
+                      return '<div class="subpanel">' +
+                        '<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px">' +
+                          '<strong style="color:' + (at.verdict === 'correct' ? 'var(--emerald)' : 'var(--amber)') + '">' + escapeHtml(at.scoreLabel) + '</strong>' +
+                          '<span class="font-mono-tabular" style="color:var(--text-subtle)">' + formatTime(at.createdAt) + '</span>' +
+                        '</div>' +
+                        '<div class="english-mono" style="margin-bottom:8px">' + escapeHtml(at.userAnswer) + '</div>' +
+                        '<div style="font-size:12px;color:var(--text-muted);line-height:1.5">' + escapeHtml(at.feedbackKorean) + '</div>' +
+                      '</div>';
+                    }).join('')
+                  : '');
+            } else if (state.activeTab === 'literal') {
+              var sentsLit = selected.analysis.sentences || [];
+              tabBody +=
+                '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">' +
+                  '<span style="font-size:13px;font-weight:700">문장별 직독직해 (' + sentsLit.length + '문장)</span>' +
+                  '<div style="display:flex;gap:6px">' +
+                    ['parallel:함께 보기', 'chunked:직독직해만', 'natural:자연 의역만'].map(function (pair) {
+                      var p = pair.split(':');
+                      return '<button type="button" class="btn btn-sm ' + (state.literalMode === p[0] ? 'btn-dark' : 'btn-outline') + '" data-litmode="' + p[0] + '">' + p[1] + '</button>';
+                    }).join('') +
+                  '</div>' +
+                '</div>' +
+                (sentsLit.length === 0
+                  ? '<div class="subpanel soft" style="font-size:13px;color:var(--text-subtle)">추출된 영어 문장이 없습니다.</div>'
+                  : sentsLit.map(function (s) {
+                      return '<div class="step-card">' +
+                        '<div style="font-size:11px;font-weight:700;color:var(--primary)">문장 ' + s.index + (evSet[s.index] ? ' · 정답/영작 핵심 근거' : '') + '</div>' +
+                        '<div class="english-mono">' + escapeHtml(state.literalMode === 'natural' ? s.original : s.chunked) + '</div>' +
+                        (state.literalMode !== 'natural' ? '<div style="font-size:13px;color:var(--text-muted);line-height:1.55"><strong>직독:</strong> ' + escapeHtml(s.literalTranslation) + '</div>' : '') +
+                        (state.literalMode !== 'chunked' ? '<div style="font-size:13px;color:var(--text);line-height:1.55"><strong>의역:</strong> ' + escapeHtml(s.naturalTranslation) + '</div>' : '') +
+                      '</div>';
+                    }).join(''));
+            } else if (state.activeTab === 'grammar') {
+              var sentsGram = (selected.analysis.sentences || []).filter(function (s) { return s.grammarPoints && s.grammarPoints.length > 0; });
+              tabBody += sentsGram.length === 0
+                ? '<div class="subpanel soft" style="font-size:13px;color:var(--text-subtle)">등록된 구문 포인트가 없습니다.</div>'
+                : sentsGram.map(function (s) {
+                    return '<div class="step-card">' +
+                      '<div style="font-size:11px;font-weight:700;color:var(--text-subtle)">문장 ' + s.index + '</div>' +
+                      '<div class="english-mono" style="font-size:13.5px">' + escapeHtml(s.original) + '</div>' +
+                      s.grammarPoints.map(function (g) {
+                        return '<div class="subpanel blue" style="padding:10px 12px">' +
+                          '<div style="font-size:12px;font-weight:700;color:#1e3a8a">' + escapeHtml(g.pointTitle) + ' — <code>' + escapeHtml(g.targetPhrase) + '</code></div>' +
+                          '<div style="font-size:12.5px;margin-top:4px;line-height:1.5">' + escapeHtml(g.explanation) + '</div>' +
+                        '</div>';
+                      }).join('') +
+                    '</div>';
+                  }).join('');
+            } else if (state.activeTab === 'vocab') {
+              var vocs = selected.analysis.vocabulary || [];
+              tabBody +=
+                '<div class="vocab-grid">' +
+                  vocs.map(function (v) {
+                    return '<div class="step-card">' +
+                      '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px">' +
+                        '<div><strong style="font-size:15px">' + escapeHtml(v.word) + '</strong> <span style="font-size:11px;color:var(--text-subtle)">' + escapeHtml(v.partOfSpeech) + '</span></div>' +
+                        '<button type="button" class="btn btn-sm ' + (v.memorized ? 'btn-dark' : 'btn-outline') + '" data-toggle-vocab="' + escapeHtml(v.id) + '">' + (v.memorized ? '암기 완료' : '암기 체크') + '</button>' +
+                      '</div>' +
+                      '<div style="font-size:13px;font-weight:600">' + escapeHtml(v.meaning) + '</div>' +
+                      (v.synonyms && v.synonyms.length ? '<div style="font-size:11.5px;color:var(--text-muted)">유의어: ' + escapeHtml(v.synonyms.join(', ')) + '</div>' : '') +
+                      '<div style="font-size:11.5px;color:var(--text-subtle);font-style:italic">' + escapeHtml(v.exampleInPassage) + '</div>' +
+                    '</div>';
+                  }).join('') +
+                '</div>';
+            }
+
+            // Follow-up Ask Section inside workspace
+            var fHist = selected.followUpHistory || [];
+            var followUpHtml =
+              '<div class="subpanel soft" style="margin-top:8px;display:flex;flex-direction:column;gap:10px">' +
+                '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">' +
+                  '<strong style="font-size:13px">풀이 방식 선택 &amp; 추가 질문</strong>' +
+                  '<div class="chip-group">' +
+                    SOLVE_STYLES.map(function (st) {
+                      return '<button type="button" class="chip-btn ' + (state.followUpStyle === st.id ? 'active' : '') + '" data-fstyle="' + st.id + '">' + st.label + '</button>';
+                    }).join('') +
+                  '</div>' +
+                '</div>' +
+                '<div class="chip-group">' +
+                  '<button type="button" class="chip-btn" data-fqpreset="이 문제를 어떤 방식으로 풀이·정리하면 가장 이해하기 쉬울지 알려주세요.">어떤 풀이 방식이 좋을지 물어보기</button>' +
+                  '<button type="button" class="chip-btn" data-fqpreset="이 지문의 핵심 문법과 내신 함정 포인트를 정리해 주세요.">핵심 문법·함정 요약</button>' +
+                '</div>' +
+                '<div style="display:flex;gap:8px">' +
+                  '<input id="followUpInput" type="text" class="input-box" placeholder="질문할 내용을 입력하세요 (예: 왜 3번이 정답인지 쉽게 설명해줘)" />' +
+                  '<button type="button" class="btn btn-primary btn-sm" id="askFollowUpBtn">질문</button>' +
+                '</div>' +
+                (fHist.length > 0
+                  ? '<div style="display:flex;flex-direction:column;gap:8px">' +
+                    fHist.map(function (h) {
+                      return '<div class="subpanel" style="padding:10px 12px">' +
+                        '<div style="font-size:12px;font-weight:700;color:var(--primary)">Q. ' + escapeHtml(h.question) + '</div>' +
+                        '<div style="font-size:12.5px;margin-top:4px;line-height:1.55;white-space:pre-wrap">' + escapeHtml(h.answer) + '</div>' +
+                      '</div>';
+                    }).join('') +
+                    '</div>'
+                  : '') +
+              '</div>';
+
+            workspaceHtml =
+              '<article class="card">' +
+                '<div class="ws-header">' +
+                  '<div style="flex:1;min-width:240px">' +
+                    '<div class="tag-row">' +
+                      '<span class="tag-badge blue">' + escapeHtml(getLangLabel(selected.languageFormat)) + '</span>' +
+                      (selected.sourceTag ? '<span class="tag-badge">' + escapeHtml(selected.sourceTag) + '</span>' : '') +
+                      '<span class="font-mono-tabular">' + formatDate(selected.createdAt) + '</span>' +
+                    '</div>' +
+                    '<h1 class="ws-title">' + escapeHtml(selected.title) + '</h1>' +
+                    '<p class="ws-summary">' + escapeHtml(selected.analysis.summaryKorean) + '</p>' +
+                  '</div>' +
+                  '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">' +
+                    '<button type="button" class="btn btn-sm ' + (selected.studyStatus === 'mastered' ? 'btn-dark' : 'btn-outline') + '" id="toggleStatusBtn">' +
+                      (selected.studyStatus === 'mastered' ? '이해 완료 ✓' : '복습 필요') +
+                    '</button>' +
+                    (!state.confirmDelete
+                      ? '<button type="button" class="btn btn-danger-soft btn-sm" id="askDeleteBtn">삭제</button>'
+                      : '<button type="button" class="btn btn-danger-soft btn-sm" id="confirmDeleteBtn">정말 삭제</button>' +
+                        '<button type="button" class="btn btn-soft btn-sm" id="cancelDeleteBtn">취소</button>') +
+                  '</div>' +
+                '</div>' +
+                '<div class="ws-grid">' +
+                  leftHtml +
+                  '<div class="ws-right">' +
+                    '<div class="tab-bar">' +
+                      tabs.map(function (t) {
+                        return '<button type="button" class="tab-btn ' + (state.activeTab === t.id ? 'active' : '') + '" data-tab="' + t.id + '">' + escapeHtml(t.label) + '</button>';
+                      }).join('') +
+                    '</div>' +
+                    '<div class="ws-body">' + tabBody + followUpHtml + '</div>' +
+                  '</div>' +
+                '</div>' +
+              '</article>';
+          }
+
+          return '<div class="feed-layout">' + sidebarHtml + workspaceHtml + '</div>';
+        }
+
+        function renderVocabView() {
+          var all = [];
+          state.posts.forEach(function (p) {
+            (p.analysis.vocabulary || []).forEach(function (v) {
+              all.push({ postId: p.id, postTitle: p.title, v: v });
+            });
+          });
+          var filtered = all.filter(function (row) {
+            if (state.vocabFilter === 'unmemorized') return !row.v.memorized;
+            if (state.vocabFilter === 'memorized') return row.v.memorized;
+            return true;
+          });
+
+          return '<section class="card" style="padding:24px;max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:16px">' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border-bottom:1px solid var(--border);padding-bottom:16px">' +
+              '<div>' +
+                '<h1 class="font-editorial" style="margin:0;font-size:24px">내 단어장 (' + all.length + '개)</h1>' +
+                '<p style="margin:4px 0 0;font-size:13px;color:var(--text-muted)">저장된 모든 학습 노트의 핵심 어휘를 한곳에서 암기 테스트할 수 있습니다.</p>' +
+              '</div>' +
+              '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
+                '<button type="button" class="btn btn-sm ' + (state.vocabHideMeanings ? 'btn-dark' : 'btn-outline') + '" id="vocabHideBtn">' + (state.vocabHideMeanings ? '뜻 가리기 모드 ON' : '뜻 가리기 암기') + '</button>' +
+                ['all:전체', 'unmemorized:미암기', 'memorized:암기완료'].map(function (pair) {
+                  var p = pair.split(':');
+                  return '<button type="button" class="btn btn-sm ' + (state.vocabFilter === p[0] ? 'btn-primary' : 'btn-soft') + '" data-vfilter="' + p[0] + '">' + p[1] + '</button>';
+                }).join('') +
+              '</div>' +
+            '</div>' +
+            (filtered.length === 0
+              ? '<div style="padding:40px;text-align:center;color:var(--text-subtle);font-size:13px">표시할 단어가 없습니다.</div>'
+              : '<div class="vocab-grid">' +
+                filtered.map(function (row) {
+                  var hidden = state.vocabHideMeanings && !state.revealedVocab[row.v.id];
+                  return '<div class="step-card">' +
+                    '<div style="display:flex;justify-content:space-between;align-items:center">' +
+                      '<div><strong style="font-size:16px">' + escapeHtml(row.v.word) + '</strong> <span style="font-size:11px;color:var(--text-subtle)">' + escapeHtml(row.v.partOfSpeech) + '</span></div>' +
+                      '<button type="button" class="btn btn-sm ' + (row.v.memorized ? 'btn-dark' : 'btn-outline') + '" data-vault-vocab="' + escapeHtml(row.postId + '::' + row.v.id) + '">' + (row.v.memorized ? '완료' : '암기') + '</button>' +
+                    '</div>' +
+                    (hidden
+                      ? '<button type="button" class="btn btn-soft btn-sm" data-reveal-vocab="' + escapeHtml(row.v.id) + '">클릭해서 뜻 확인</button>'
+                      : '<div style="font-size:13.5px;font-weight:600">' + escapeHtml(row.v.meaning) + '</div>') +
+                    '<div style="font-size:11.5px;color:var(--text-subtle)">' + escapeHtml(row.v.exampleInPassage) + '</div>' +
+                    '<button type="button" style="background:none;border:none;padding:0;text-align:left;font-size:11px;color:var(--primary);font-weight:600" data-jump-post="' + escapeHtml(row.postId) + '">출처 노트: ' + escapeHtml(row.postTitle) + ' →</button>' +
+                  '</div>';
+                }).join('') +
+                '</div>') +
+          '</section>';
+        }
+
+        function renderBackupView() {
+          var prob = state.posts.filter(function (p) { return p.postType === 'problem'; }).length;
+          var writ = state.posts.filter(function (p) { return p.postType === 'writing'; }).length;
+          var pass = state.posts.filter(function (p) { return p.postType === 'passage'; }).length;
+          var mast = state.posts.filter(function (p) { return p.studyStatus === 'mastered'; }).length;
+          var voc = state.posts.reduce(function (s, p) { return s + (p.analysis.vocabulary || []).length; }, 0);
+          var bytes = new Blob([JSON.stringify(state.posts)]).size;
+
+          return '<section class="card" style="padding:28px;max-width:920px;margin:0 auto;display:flex;flex-direction:column;gap:20px">' +
+            '<div style="border-bottom:1px solid var(--border);padding-bottom:16px">' +
+              '<div style="font-size:12px;color:var(--text-subtle)">순수 단일 index.html 로컬 아카이브</div>' +
+              '<h1 class="font-editorial" style="margin:4px 0 6px;font-size:24px">저장소 현황 및 백업 관리</h1>' +
+              '<p style="margin:0;font-size:13.5px;color:var(--text-muted)">별도의 빌드나 패키지 없이 브라우저 로컬 저장소에 안전하게 보관됩니다. 언제든 JSON 파일로 내보내거나 복원할 수 있습니다.</p>' +
+            '</div>' +
+            '<div class="kpi-grid">' +
+              '<div class="kpi-card"><div style="font-size:12px;color:var(--text-subtle)">저장된 노트</div><div class="font-mono-tabular" style="font-size:22px;font-weight:700;margin:4px 0">' + state.posts.length + '건</div><div style="font-size:11px;color:var(--text-subtle)">문제 ' + prob + ' · 영작 ' + writ + ' · 원문 ' + pass + '</div></div>' +
+              '<div class="kpi-card"><div style="font-size:12px;color:var(--text-subtle)">이해 완료</div><div class="font-mono-tabular" style="font-size:22px;font-weight:700;color:var(--emerald);margin:4px 0">' + mast + '건</div><div style="font-size:11px;color:var(--text-subtle)">복습 필요 ' + (state.posts.length - mast) + '건</div></div>' +
+              '<div class="kpi-card"><div style="font-size:12px;color:var(--text-subtle)">누적 어휘</div><div class="font-mono-tabular" style="font-size:22px;font-weight:700;margin:4px 0">' + voc + '개</div><div style="font-size:11px;color:var(--text-subtle)">단어장 복습 가능</div></div>' +
+              '<div class="kpi-card"><div style="font-size:12px;color:var(--text-subtle)">로컬 용량</div><div class="font-mono-tabular" style="font-size:22px;font-weight:700;margin:4px 0">' + formatBytes(bytes) + '</div><div style="font-size:11px;color:var(--text-subtle)">브라우저 저장</div></div>' +
+            '</div>' +
+            (state.backupNotice ? '<div class="notice-box ' + state.backupNotice.type + '">' + escapeHtml(state.backupNotice.text) + '</div>' : '') +
+            '<div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:14px">' +
+              '<div class="subpanel" style="display:flex;flex-direction:column;gap:10px">' +
+                '<strong style="font-size:14px">JSON 백업 파일 내보내기</strong>' +
+                '<p style="margin:0;font-size:12.5px;color:var(--text-muted)">저장된 사진, 풀이, 메모를 하나의 JSON 파일로 내려받습니다.</p>' +
+                '<div><button type="button" class="btn btn-dark btn-sm" id="exportJsonBtn">JSON 백업 다운로드</button></div>' +
+              '</div>' +
+              '<div class="subpanel" style="display:flex;flex-direction:column;gap:10px">' +
+                '<strong style="font-size:14px">JSON 백업 파일 불러오기</strong>' +
+                '<p style="margin:0;font-size:12.5px;color:var(--text-muted)">저장해 둔 PassageNote JSON 파일을 선택해 기존 노트와 합칩니다.</p>' +
+                '<input type="file" id="importJsonInput" accept="application/json,.json" style="display:none" />' +
+                '<div><button type="button" class="btn btn-outline btn-sm" id="importJsonBtn">JSON 파일 선택</button></div>' +
+              '</div>' +
+            '</div>' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-top:1px solid var(--border);padding-top:16px">' +
+              '<button type="button" class="btn btn-soft btn-sm" id="restoreSamplesBtn">예시 노트 3종 다시 불러오기</button>' +
+              (!state.confirmClearAll
+                ? '<button type="button" class="btn btn-danger-soft btn-sm" id="askClearAllBtn">전체 기록 비우기</button>'
+                : '<div style="display:flex;gap:8px;align-items:center"><span style="font-size:12px;color:var(--red);font-weight:600">정말 전부 삭제할까요?</span><button type="button" class="btn btn-danger-soft btn-sm" id="confirmClearAllBtn">삭제 확인</button><button type="button" class="btn btn-soft btn-sm" id="cancelClearAllBtn">취소</button></div>') +
+            '</div>' +
+          '</section>';
+        }
+
+        function renderSnapModal() {
+          var backdrop = document.getElementById('snapModalBackdrop');
+          if (!state.snapOpen) {
+            backdrop.classList.add('hidden');
+            return;
+          }
+          backdrop.classList.remove('hidden');
+
+          var photoBtn = document.getElementById('snapTabPhotoBtn');
+          var textBtn = document.getElementById('snapTabTextBtn');
+          photoBtn.className = 'btn btn-sm ' + (state.snapTab === 'photo' ? 'btn-dark' : 'btn-outline');
+          textBtn.className = 'btn btn-sm ' + (state.snapTab === 'text' ? 'btn-dark' : 'btn-outline');
+
+          document.getElementById('snapPhotoSection').style.display = state.snapTab === 'photo' ? 'flex' : 'none';
+          document.getElementById('snapTextSection').style.display = state.snapTab === 'text' ? 'flex' : 'none';
+
+          var edWrap = document.getElementById('snapEditorWrap');
+          if (state.snapPhotos.length > 0) {
+            edWrap.style.display = 'flex';
+            var active = state.snapPhotos[state.snapActivePhotoIdx] || state.snapPhotos[0];
+            document.getElementById('snapActiveLabel').textContent = '편집 중: 사진 ' + (state.snapActivePhotoIdx + 1) + ' / ' + state.snapPhotos.length + ' (최대 ' + MAX_PHOTOS + '장)';
+            document.getElementById('cropPreviewImg').src = active.rawUrl;
+            var box = document.getElementById('cropBox');
+            if (active.cropRect) {
+              box.style.display = 'block';
+              box.style.left = (active.cropRect.x * 100) + '%';
+              box.style.top = (active.cropRect.y * 100) + '%';
+              box.style.width = (active.cropRect.width * 100) + '%';
+              box.style.height = (active.cropRect.height * 100) + '%';
+            } else {
+              box.style.display = 'none';
+            }
+            document.getElementById('snapThumbStrip').innerHTML = state.snapPhotos.map(function (ph, idx) {
+              return '<button type="button" class="thumb-btn ' + (idx === state.snapActivePhotoIdx ? 'active' : '') + '" data-snap-idx="' + idx + '"><img src="' + ph.rawUrl + '" alt="사진 ' + (idx + 1) + '" /><span>사진 ' + (idx + 1) + '</span></button>';
+            }).join('');
+          } else {
+            edWrap.style.display = 'none';
+          }
+
+          document.getElementById('snapStyleChips').innerHTML = SOLVE_STYLES.map(function (st) {
+            return '<button type="button" class="chip-btn ' + (state.snapStyle === st.id ? 'active' : '') + '" data-snap-style="' + st.id + '">' + st.label + '</button>';
+          }).join('');
+        }
+
+        function renderTutorDrawer() {
+          var backdrop = document.getElementById('tutorDrawerBackdrop');
+          if (!state.tutorOpen) {
+            backdrop.classList.add('hidden');
+            return;
+          }
+          backdrop.classList.remove('hidden');
+
+          var selected = getSelectedPost();
+          document.getElementById('tutorContextTitle').textContent = selected ? selected.title : '없음';
+
+          var roleMeta = TUTOR_ROLES.find(function (r) { return r.id === state.tutorRole; }) || TUTOR_ROLES[0];
+          document.getElementById('tutorRoleDesc').textContent = roleMeta.desc;
+
+          document.getElementById('tutorRoleChips').innerHTML = TUTOR_ROLES.map(function (r) {
+            return '<button type="button" class="chip-btn ' + (state.tutorRole === r.id ? 'active' : '') + '" data-trole="' + r.id + '">' + r.label + '</button>';
+          }).join('');
+
+          document.getElementById('tutorStyleChips').innerHTML = SOLVE_STYLES.map(function (s) {
+            return '<button type="button" class="chip-btn ' + (state.tutorStyle === s.id ? 'active' : '') + '" data-tstyle="' + s.id + '">' + s.label + '</button>';
+          }).join('');
+
+          document.getElementById('tutorConditionPresets').innerHTML = CONDITION_PRESETS.map(function (p) {
+            var active = state.tutorCondition.indexOf(p) !== -1;
+            return '<button type="button" class="chip-btn ' + (active ? 'active' : '') + '" data-tpreset="' + escapeHtml(p) + '">' + escapeHtml(p) + '</button>';
+          }).join('');
+
+          document.getElementById('tutorCustomBox').style.display = state.tutorCustomOpen ? 'flex' : 'none';
+          var condVal = document.getElementById('tutorCustomCondition').value.trim();
+          var contVal = document.getElementById('tutorCustomContent').value.trim();
+          document.getElementById('clearCustomCondBtn').style.display = (condVal || contVal) ? 'inline-flex' : 'none';
+
+          var thread = document.getElementById('tutorThread');
+          if (state.tutorMessages.length === 0) {
+            thread.innerHTML =
+              '<div class="subpanel" style="font-size:12.5px;line-height:1.6">' +
+                '<strong style="color:var(--primary)">' + escapeHtml(roleMeta.label) + ' 준비 완료</strong>' +
+                '<p style="margin:6px 0 0;color:var(--text-muted)">원하는 답변 조건과 질문할 문장·지문을 아래 칸에 적고 질문해 보세요. 현재 보고 있는 노트를 연결해 바로 풀이·점검을 받을 수 있습니다.</p>' +
+              '</div>' +
+              '<button type="button" class="choice-card" style="font-size:12.5px" data-starter="이 문제를 어떤 방식으로 풀이해주면 좋을지 먼저 추천받고 선택하고 싶어요!">' +
+                '이 문제를 어떤 방식으로 풀이해주면 좋을지 먼저 추천받고 선택하고 싶어요!' +
+              '</button>' +
+              '<button type="button" class="choice-card" style="font-size:12.5px" data-starter="현재 노트의 핵심 문법과 단어 퀴즈를 1문제 내주세요.">' +
+                '현재 노트의 핵심 문법과 단어 퀴즈를 1문제 내주세요.' +
+              '</button>';
+          } else {
+            thread.innerHTML = state.tutorMessages.map(function (m) {
+              return '<div class="chat-bubble ' + (m.role === 'user' ? 'user' : 'model') + '">' +
+                (m.customCondition ? '<div style="font-size:11px;opacity:0.88;margin-bottom:4px;border-bottom:1px solid rgba(255,255,255,0.25);padding-bottom:4px">조건: ' + escapeHtml(m.customCondition) + '</div>' : '') +
+                (m.customContent ? '<div style="font-size:11px;opacity:0.9;margin-bottom:6px;background:rgba(0,0,0,0.16);padding:6px;border-radius:6px">' + escapeHtml(m.customContent) + '</div>' : '') +
+                escapeHtml(m.text) +
+              '</div>';
+            }).join('');
+            thread.scrollTop = thread.scrollHeight;
+          }
+        }
+
+        function generateLocalCoachReply(question, condition, content, post, roleId, styleId) {
+          var styleLabel = (SOLVE_STYLES.find(function (s) { return s.id === styleId; }) || SOLVE_STYLES[0]).label;
+          var lines = [];
+          lines.push('[' + styleLabel + (condition ? ' · 지정 조건: ' + condition : '') + ']');
+
+          var targetText = content || (post ? post.analysis.extractedText : '');
+          if (/방식|어떻게|추천/.test(question)) {
+            lines.push('');
+            lines.push('이 자료는 아래 4가지 방식 중 편한 순서대로 골라 풀이하면 가장 이해가 빠릅니다:');
+            lines.push('1. [초보 눈높이] 문장의 주어·동사 뼈대만 먼저 찾은 뒤 수식어를 덧붙여 읽기');
+            lines.push('2. [단계별 풀이] 1단계(근거 문장 찾기) → 2단계(선지·조건 대조) → 3단계(오답 소거)');
+            lines.push('3. [내신·함정 대비] 관계대명사·도치·시제/수일치 변형 포인트 위주로 체크');
+            lines.push('4. [직독직해 3줄 요약] "/" 끊어읽기 순서대로 핵심 요지 3문장 정리');
+            return lines.join('\n');
+          }
+
+          if (roleId === 'quick_quiz' || /퀴즈/.test(question + ' ' + condition)) {
+            var vocs = post && post.analysis.vocabulary ? post.analysis.vocabulary : [];
+            if (vocs.length > 0) {
+              var v = vocs[Math.floor(Math.random() * vocs.length)];
+              lines.push('');
+              lines.push('[스피드 어휘 퀴즈]');
+              lines.push('단어: "' + v.word + '" (' + v.partOfSpeech + ')');
+              lines.push('예문: "' + v.exampleInPassage + '"');
+              lines.push('정답/뜻: ' + v.meaning + (v.synonyms && v.synonyms.length ? ' (유의어: ' + v.synonyms.join(', ') + ')' : ''));
+              return lines.join('\n');
+            }
+          }
+
+          if (targetText) {
+            var patterns = detectGrammarPatterns(targetText);
+            var chunkPreview = splitIntoChunked(targetText.split(/[.!?]/)[0] || targetText.slice(0, 140));
+            lines.push('');
+            if (/직독|끊어|읽/.test(condition + question) || styleId === 'beginner') {
+              lines.push('• 직독직해 끊어읽기 예시:');
+              lines.push('  ' + chunkPreview);
+            }
+            if (patterns.length > 0) {
+              lines.push('• 감지된 핵심 구문:');
+              patterns.forEach(function (pt) {
+                lines.push('  - ' + pt.pointTitle + ' (' + pt.targetPhrase + '): ' + pt.explanation);
+              });
+            }
+            if (post && post.analysis.problemSection && /정답|선지|오답|3줄|요약/.test(condition + question)) {
+              lines.push('• 정답 및 핵심 근거:');
+              lines.push('  정답 ' + post.analysis.problemSection.correctAnswer + ' — ' + post.analysis.problemSection.answerSummary);
+            }
+            if (post && post.analysis.writingSection) {
+              lines.push('• 영작 핵심 체크:');
+              lines.push('  모범 표현: ' + post.analysis.writingSection.modelAnswer);
+              if (post.analysis.writingSection.deductionPoints.length > 0) {
+                lines.push('  주의점: ' + post.analysis.writingSection.deductionPoints[0]);
+              }
+            }
+          } else {
+            lines.push('');
+            lines.push('현재 연결된 지문이 없습니다. 위 "질문할 내용" 칸에 영어 문장이나 문제를 붙여넣고 다시 질문하시면 구문과 직독직해 포인트를 바로 분석해 드립니다.');
+          }
+          return lines.join('\n');
+        }
+
+        function render() {
+          renderTopNav();
+          var root = document.getElementById('appRoot');
+          if (state.activeView === 'vocab') root.innerHTML = renderVocabView();
+          else if (state.activeView === 'backup') root.innerHTML = renderBackupView();
+          else root.innerHTML = renderFeedAndWorkspace();
+          renderSnapModal();
+          renderTutorDrawer();
+        }
+
+        // Delegated Click Handlers
+        document.addEventListener('click', function (e) {
+          var t = e.target.closest('button');
+          if (!t) return;
+
+          if (t.dataset.nav) {
+            state.activeView = t.dataset.nav;
+            render();
+            return;
+          }
+          if (t.id === 'brandHomeBtn') {
+            state.activeView = 'feed';
+            render();
+            return;
+          }
+          if (t.id === 'openSnapBtn' || t.id === 'emptySnapBtn') {
+            state.snapOpen = true;
+            renderSnapModal();
+            return;
+          }
+          if (t.id === 'closeSnapBtn' || t.id === 'cancelSnapBtn') {
+            state.snapOpen = false;
+            renderSnapModal();
+            return;
+          }
+          if (t.id === 'snapTabPhotoBtn') {
+            state.snapTab = 'photo';
+            renderSnapModal();
+            return;
+          }
+          if (t.id === 'snapTabTextBtn') {
+            state.snapTab = 'text';
+            renderSnapModal();
+            return;
+          }
+          if (t.id === 'pickFilesBtn') {
+            document.getElementById('snapFileInput').click();
+            return;
+          }
+          if (t.dataset.snapIdx !== undefined) {
+            state.snapActivePhotoIdx = Number(t.dataset.snapIdx);
+            renderSnapModal();
+            return;
+          }
+          if (t.dataset.snapStyle) {
+            state.snapStyle = t.dataset.snapStyle;
+            renderSnapModal();
+            return;
+          }
+          if (t.id === 'rotateLeftBtn' || t.id === 'rotateRightBtn') {
+            var actPh = state.snapPhotos[state.snapActivePhotoIdx];
+            if (!actPh) return;
+            rotateDataUrl(actPh.rawUrl, t.id === 'rotateLeftBtn' ? -90 : 90).then(function (url) {
+              actPh.rawUrl = url;
+              actPh.cropRect = null;
+              renderSnapModal();
+            });
+            return;
+          }
+          if (t.id === 'resetCropBtn') {
+            if (state.snapPhotos[state.snapActivePhotoIdx]) {
+              state.snapPhotos[state.snapActivePhotoIdx].cropRect = null;
+              renderSnapModal();
+            }
+            return;
+          }
+          if (t.id === 'moveLeftBtn' && state.snapActivePhotoIdx > 0) {
+            var idxL = state.snapActivePhotoIdx;
+            var tmpL = state.snapPhotos[idxL - 1];
+            state.snapPhotos[idxL - 1] = state.snapPhotos[idxL];
+            state.snapPhotos[idxL] = tmpL;
+            state.snapActivePhotoIdx = idxL - 1;
+            renderSnapModal();
+            return;
+          }
+          if (t.id === 'moveRightBtn' && state.snapActivePhotoIdx < state.snapPhotos.length - 1) {
+            var idxR = state.snapActivePhotoIdx;
+            var tmpR = state.snapPhotos[idxR + 1];
+            state.snapPhotos[idxR + 1] = state.snapPhotos[idxR];
+            state.snapPhotos[idxR] = tmpR;
+            state.snapActivePhotoIdx = idxR + 1;
+            renderSnapModal();
+            return;
+          }
+          if (t.id === 'removePhotoBtn') {
+            state.snapPhotos.splice(state.snapActivePhotoIdx, 1);
+            state.snapActivePhotoIdx = Math.max(0, Math.min(state.snapActivePhotoIdx, state.snapPhotos.length - 1));
+            renderSnapModal();
+            return;
+          }
+
+          if (t.dataset.typefilter) {
+            state.typeFilter = t.dataset.typefilter;
+            render();
+            return;
+          }
+          if (t.dataset.selectPost) {
+            selectPost(t.dataset.selectPost);
+            return;
+          }
+          if (t.dataset.leftmode) {
+            state.leftMode = t.dataset.leftmode;
+            render();
+            return;
+          }
+          if (t.dataset.viewphoto !== undefined) {
+            state.activePhotoIndex = Number(t.dataset.viewphoto);
+            render();
+            return;
+          }
+          if (t.id === 'zoomInBtn') {
+            state.zoom = Math.min(2, state.zoom + 0.25);
+            render();
+            return;
+          }
+          if (t.id === 'zoomOutBtn') {
+            state.zoom = Math.max(0.75, state.zoom - 0.25);
+            render();
+            return;
+          }
+          if (t.dataset.tab) {
+            state.activeTab = t.dataset.tab;
+            render();
+            return;
+          }
+          if (t.dataset.litmode) {
+            state.literalMode = t.dataset.litmode;
+            render();
+            return;
+          }
+          if (t.dataset.pickChoice) {
+            state.choiceDraft = t.dataset.pickChoice;
+            render();
+            return;
+          }
+          if (t.id === 'checkChoiceBtn') {
+            var selP = getSelectedPost();
+            if (selP && state.choiceDraft) {
+              state.revealedProblem = true;
+              updatePostById(selP.id, function (p) {
+                return Object.assign({}, p, { userSelectedChoice: state.choiceDraft, updatedAt: Date.now() });
+              });
+              render();
+            }
+            return;
+          }
+          if (t.id === 'toggleProblemRevealBtn') {
+            state.revealedProblem = !state.revealedProblem;
+            render();
+            return;
+          }
+          if (t.id === 'toggleModelHideBtn') {
+            state.hideModelAnswer = !state.hideModelAnswer;
+            render();
+            return;
+          }
+          if (t.id === 'checkWritingBtn') {
+            var wp = getSelectedPost();
+            if (!wp || !state.writingDraft.trim()) return;
+            var ans = state.writingDraft.trim();
+            var wsSec = wp.analysis.writingSection;
+            var missingWords = (wsSec.givenWords || []).filter(function (w) {
+              return ans.toLowerCase().indexOf(w.toLowerCase().slice(0, Math.max(3, w.length - 1))) === -1;
+            });
+            var exactMatch = wsSec.modelAnswer && ans.toLowerCase().replace(/[.!?]+$/, '') === wsSec.modelAnswer.toLowerCase().replace(/[.!?]+$/, '');
+            var verdict = exactMatch ? 'correct' : (missingWords.length === 0 ? 'partial' : 'needs_revision');
+            var label = exactMatch ? '모범 답안과 일치!' : (missingWords.length === 0 ? '<보기> 단어 모두 포함 · 어순 확인 필요' : '누락된 <보기> 단어 ' + missingWords.length + '개');
+            var fb = exactMatch
+              ? '어순, 철자, <조건>까지 모범 답안과 정확히 일치합니다.'
+              : (missingWords.length > 0 ? '빠진 <보기> 단어: ' + missingWords.join(', ') + '. ' : '<보기> 단어는 모두 들어갔습니다. ') +
+                (wsSec.modelAnswer && wsSec.modelAnswer.indexOf('(') !== 0 ? '참고 모범 답안: ' + wsSec.modelAnswer : '영작 빌드업 1~4단계와 대조해 시제·어순을 점검해 보세요.');
+            var attempt = { id: 'att-' + Date.now(), createdAt: Date.now(), userAnswer: ans, verdict: verdict, scoreLabel: label, feedbackKorean: fb };
+            updatePostById(wp.id, function (p) {
+              return Object.assign({}, p, { writingAttempts: [attempt].concat(p.writingAttempts || []), updatedAt: Date.now() });
+            });
+            render();
+            return;
+          }
+          if (t.dataset.toggleVocab) {
+            var spv = getSelectedPost();
+            if (!spv) return;
+            var vid = t.dataset.toggleVocab;
+            updatePostById(spv.id, function (p) {
+              return Object.assign({}, p, {
+                analysis: Object.assign({}, p.analysis, {
+                  vocabulary: p.analysis.vocabulary.map(function (v) { return v.id === vid ? Object.assign({}, v, { memorized: !v.memorized }) : v; })
+                })
+              });
+            });
+            render();
+            return;
+          }
+          if (t.id === 'toggleStatusBtn') {
+            var stP = getSelectedPost();
+            if (!stP) return;
+            updatePostById(stP.id, function (p) {
+              return Object.assign({}, p, { studyStatus: p.studyStatus === 'mastered' ? 'review_needed' : 'mastered', updatedAt: Date.now() });
+            });
+            render();
+            return;
+          }
+          if (t.id === 'askDeleteBtn') {
+            state.confirmDelete = true;
+            render();
+            return;
+          }
+          if (t.id === 'cancelDeleteBtn') {
+            state.confirmDelete = false;
+            render();
+            return;
+          }
+          if (t.id === 'confirmDeleteBtn') {
+            var delP = getSelectedPost();
+            if (!delP) return;
+            state.posts = state.posts.filter(function (p) { return p.id !== delP.id; });
+            savePosts(state.posts);
+            state.selectedPostId = state.posts[0] ? state.posts[0].id : null;
+            state.confirmDelete = false;
+            render();
+            return;
+          }
+          if (t.dataset.fstyle) {
+            state.followUpStyle = t.dataset.fstyle;
+            render();
+            return;
+          }
+          if (t.dataset.fqpreset) {
+            var fi = document.getElementById('followUpInput');
+            if (fi) { fi.value = t.dataset.fqpreset; fi.focus(); }
+            return;
+          }
+          if (t.id === 'askFollowUpBtn') {
+            var fP = getSelectedPost();
+            var qEl = document.getElementById('followUpInput');
+            var qVal = qEl ? qEl.value.trim() : '';
+            if (!fP || !qVal) return;
+            var ansText = generateLocalCoachReply(qVal, '', '', fP, 'tutor', state.followUpStyle);
+            updatePostById(fP.id, function (p) {
+              return Object.assign({}, p, {
+                followUpHistory: (p.followUpHistory || []).concat([{ id: 'fq-' + Date.now(), question: qVal, answer: ansText, createdAt: Date.now() }])
+              });
+            });
+            render();
+            return;
+          }
+
+          // Vocab vault
+          if (t.id === 'vocabHideBtn') {
+            state.vocabHideMeanings = !state.vocabHideMeanings;
+            state.revealedVocab = {};
+            render();
+            return;
+          }
+          if (t.dataset.vfilter) {
+            state.vocabFilter = t.dataset.vfilter;
+            render();
+            return;
+          }
+          if (t.dataset.revealVocab) {
+            state.revealedVocab[t.dataset.revealVocab] = true;
+            render();
+            return;
+          }
+          if (t.dataset.vaultVocab) {
+            var pairV = t.dataset.vaultVocab.split('::');
+            updatePostById(pairV[0], function (p) {
+              return Object.assign({}, p, {
+                analysis: Object.assign({}, p.analysis, {
+                  vocabulary: p.analysis.vocabulary.map(function (v) { return v.id === pairV[1] ? Object.assign({}, v, { memorized: !v.memorized }) : v; })
+                })
+              });
+            });
+            render();
+            return;
+          }
+          if (t.dataset.jumpPost) {
+            state.activeView = 'feed';
+            selectPost(t.dataset.jumpPost);
+            return;
+          }
+
+          // Backup actions
+          if (t.id === 'exportJsonBtn') {
+            var blob = new Blob([JSON.stringify({ app: 'PassageNote', version: 2, exportedAt: new Date().toISOString(), posts: state.posts }, null, 2)], { type: 'application/json' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'passagenote-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+            state.backupNotice = { type: 'success', text: '학습 노트 ' + state.posts.length + '건을 JSON 파일로 내보냈습니다.' };
+            render();
+            return;
+          }
+          if (t.id === 'importJsonBtn') {
+            document.getElementById('importJsonInput').click();
+            return;
+          }
+          if (t.id === 'restoreSamplesBtn') {
+            var samples = createSamplePosts();
+            var existingMap = {};
+            state.posts.forEach(function (p) { existingMap[p.id] = p; });
+            samples.forEach(function (s) { existingMap[s.id] = s; });
+            state.posts = Object.keys(existingMap).map(function (k) { return existingMap[k]; }).sort(function (a, b) { return b.createdAt - a.createdAt; });
+            savePosts(state.posts);
+            state.backupNotice = { type: 'success', text: '예시 노트 3종을 다시 불러왔습니다.' };
+            render();
+            return;
+          }
+          if (t.id === 'askClearAllBtn') {
+            state.confirmClearAll = true;
+            render();
+            return;
+          }
+          if (t.id === 'cancelClearAllBtn') {
+            state.confirmClearAll = false;
+            render();
+            return;
+          }
+          if (t.id === 'confirmClearAllBtn') {
+            state.posts = [];
+            state.selectedPostId = null;
+            state.confirmClearAll = false;
+            savePosts(state.posts);
+            state.backupNotice = { type: 'success', text: '모든 학습 노트를 비웠습니다.' };
+            render();
+            return;
+          }
+
+          // Tutor drawer actions
+          if (t.id === 'openTutorBtn') {
+            state.tutorOpen = true;
+            renderTutorDrawer();
+            return;
+          }
+          if (t.id === 'closeTutorBtn') {
+            state.tutorOpen = false;
+            renderTutorDrawer();
+            return;
+          }
+          if (t.id === 'resetChatBtn') {
+            state.tutorMessages = [];
+            saveChat([]);
+            renderTutorDrawer();
+            return;
+          }
+          if (t.id === 'toggleCustomCondBtn') {
+            state.tutorCustomOpen = !state.tutorCustomOpen;
+            renderTutorDrawer();
+            return;
+          }
+          if (t.id === 'clearCustomCondBtn') {
+            state.tutorCondition = '';
+            document.getElementById('tutorCustomCondition').value = '';
+            document.getElementById('tutorCustomContent').value = '';
+            renderTutorDrawer();
+            return;
+          }
+          if (t.id === 'importNoteTextBtn') {
+            var curPost = getSelectedPost();
+            if (curPost) {
+              document.getElementById('tutorCustomContent').value = curPost.analysis.extractedText || '';
+              renderTutorDrawer();
+            }
+            return;
+          }
+          if (t.dataset.trole) {
+            state.tutorRole = t.dataset.trole;
+            renderTutorDrawer();
+            return;
+          }
+          if (t.dataset.tstyle) {
+            state.tutorStyle = t.dataset.tstyle;
+            renderTutorDrawer();
+            return;
+          }
+          if (t.dataset.tpreset) {
+            var pre = t.dataset.tpreset;
+            var toks = state.tutorCondition.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+            var posIdx = toks.indexOf(pre);
+            if (posIdx !== -1) toks.splice(posIdx, 1);
+            else toks.push(pre);
+            state.tutorCondition = toks.join(', ');
+            document.getElementById('tutorCustomCondition').value = state.tutorCondition;
+            renderTutorDrawer();
+            return;
+          }
+          if (t.dataset.starter) {
+            submitTutorMessage(t.dataset.starter);
+            return;
+          }
+        });
+
+        document.getElementById('tutorBackdropSpacer').addEventListener('click', function () {
+          state.tutorOpen = false;
+          renderTutorDrawer();
+        });
+
+        // Delegated Input / Change Handlers
+        var memoTimer = null;
+        document.addEventListener('input', function (e) {
+          var el = e.target;
+          if (el.id === 'feedSearchInput') {
+            state.searchQuery = el.value;
+            render();
+            var refocused = document.getElementById('feedSearchInput');
+            if (refocused) {
+              refocused.focus();
+              refocused.setSelectionRange(refocused.value.length, refocused.value.length);
+            }
+          } else if (el.id === 'memoTextarea') {
+            var p = getSelectedPost();
+            if (!p) return;
+            var val = el.value;
+            clearTimeout(memoTimer);
+            memoTimer = setTimeout(function () {
+              updatePostById(p.id, function (item) { return Object.assign({}, item, { userMemo: val, updatedAt: Date.now() }); });
+              var tag = document.getElementById('memoSavedTag');
+              if (tag) {
+                tag.style.display = 'inline';
+                setTimeout(function () { if (tag) tag.style.display = 'none'; }, 1500);
+              }
+            }, 350);
+          } else if (el.id === 'writingPracticeInput') {
+            state.writingDraft = el.value;
+          } else if (el.id === 'tutorCustomCondition') {
+            state.tutorCondition = el.value;
+            renderTutorDrawer();
+          } else if (el.id === 'tutorCustomContent') {
+            document.getElementById('clearCustomCondBtn').style.display =
+              (el.value.trim() || state.tutorCondition.trim()) ? 'inline-flex' : 'none';
+          }
+        });
+
+        document.addEventListener('change', function (e) {
+          var el = e.target;
+          if (el.id === 'toggleEvidenceChk') {
+            state.highlightEvidence = el.checked;
+            render();
+          } else if (el.id === 'importJsonInput') {
+            var file = el.files && el.files[0];
+            el.value = '';
+            if (!file) return;
+            file.text().then(function (raw) {
+              var parsed = JSON.parse(raw);
+              var arr = Array.isArray(parsed) ? parsed : (parsed && parsed.posts);
+              if (!Array.isArray(arr)) throw new Error('올바른 PassageNote 백업 파일이 아닙니다.');
+              var map = {};
+              state.posts.forEach(function (p) { map[p.id] = p; });
+              var count = 0;
+              arr.forEach(function (item) {
+                if (item && item.id && item.title && item.analysis) {
+                  map[item.id] = item;
+                  count++;
+                }
+              });
+              state.posts = Object.keys(map).map(function (k) { return map[k]; }).sort(function (a, b) { return b.createdAt - a.createdAt; });
+              savePosts(state.posts);
+              state.backupNotice = { type: 'success', text: '총 ' + count + '건의 노트를 병합했습니다.' };
+              render();
+            }).catch(function (err) {
+              state.backupNotice = { type: 'error', text: err.message || '파일을 읽지 못했습니다.' };
+              render();
+            });
+          }
+        });
+
+        // Photo Upload / Drop / Paste / Crop Handlers
+        function addImageFiles(fileList) {
+          var files = Array.prototype.slice.call(fileList || []);
+          var remaining = MAX_PHOTOS - state.snapPhotos.length;
+          if (remaining <= 0) return;
+          files.slice(0, remaining).forEach(function (f) {
+            if (f.type && f.type.indexOf('image/') !== 0) return;
+            readFileAsDataUrl(f).then(function (url) {
+              state.snapPhotos.push({ id: 'ph-' + Date.now() + Math.random(), rawUrl: url, cropRect: null });
+              state.snapActivePhotoIdx = state.snapPhotos.length - 1;
+              renderSnapModal();
+            });
+          });
+        }
+
+        document.getElementById('snapFileInput').addEventListener('change', function (e) {
+          addImageFiles(e.target.files);
+          e.target.value = '';
+        });
+
+        var dz = document.getElementById('snapDropzone');
+        dz.addEventListener('dragover', function (e) { e.preventDefault(); dz.classList.add('dragging'); });
+        dz.addEventListener('dragleave', function () { dz.classList.remove('dragging'); });
+        dz.addEventListener('drop', function (e) {
+          e.preventDefault();
+          dz.classList.remove('dragging');
+          addImageFiles(e.dataTransfer.files);
+        });
+
+        window.addEventListener('paste', function (e) {
+          var items = e.clipboardData && e.clipboardData.items;
+          if (!items) return;
+          for (var i = 0; i < items.length; i++) {
+            if (items[i].type.indexOf('image/') === 0) {
+              var file = items[i].getAsFile();
+              if (!file) continue;
+              e.preventDefault();
+              readFileAsDataUrl(file).then(function (url) {
+                state.snapOpen = true;
+                state.snapTab = 'photo';
+                if (state.snapPhotos.length < MAX_PHOTOS) {
+                  state.snapPhotos.push({ id: 'ph-' + Date.now(), rawUrl: url, cropRect: null });
+                  state.snapActivePhotoIdx = state.snapPhotos.length - 1;
+                }
+                renderSnapModal();
+              });
+              break;
+            }
+          }
+        });
+
+        var cropStage = document.getElementById('cropStage');
+        function getNormPos(ev) {
+          var r = cropStage.getBoundingClientRect();
+          return {
+            x: Math.max(0, Math.min(1, (ev.clientX - r.left) / r.width)),
+            y: Math.max(0, Math.min(1, (ev.clientY - r.top) / r.height))
+          };
+        }
+        cropStage.addEventListener('pointerdown', function (e) {
+          if (!state.snapPhotos[state.snapActivePhotoIdx]) return;
+          state.snapDragging = true;
+          state.snapDragStart = getNormPos(e);
+        });
+        window.addEventListener('pointermove', function (e) {
+          if (!state.snapDragging || !state.snapDragStart) return;
+          var cur = getNormPos(e);
+          var act = state.snapPhotos[state.snapActivePhotoIdx];
+          if (!act) return;
+          act.cropRect = {
+            x: Math.min(state.snapDragStart.x, cur.x),
+            y: Math.min(state.snapDragStart.y, cur.y),
+            width: Math.abs(cur.x - state.snapDragStart.x),
+            height: Math.abs(cur.y - state.snapDragStart.y)
+          };
+          renderSnapModal();
+        });
+        window.addEventListener('pointerup', function () {
+          if (!state.snapDragging) return;
+          state.snapDragging = false;
+          state.snapDragStart = null;
+          var act = state.snapPhotos[state.snapActivePhotoIdx];
+          if (act && act.cropRect && (act.cropRect.width < 0.04 || act.cropRect.height < 0.04)) {
+            act.cropRect = null;
+            renderSnapModal();
+          }
+        });
+
+        // Snap Form Submit
+        document.getElementById('snapForm').addEventListener('submit', function (e) {
+          e.preventDefault();
+          var errBox = document.getElementById('snapErrorBox');
+          errBox.style.display = 'none';
+
+          var rawText = state.snapTab === 'text'
+            ? document.getElementById('snapTextInput').value.trim()
+            : document.getElementById('snapPhotoTextNote').value.trim();
+
+          if (state.snapTab === 'photo' && state.snapPhotos.length === 0 && !rawText) {
+            errBox.textContent = '사진을 1장 이상 첨부하거나 텍스트를 입력해 주세요.';
+            errBox.style.display = 'block';
+            return;
+          }
+          if (state.snapTab === 'text' && !rawText) {
+            errBox.textContent = '분석할 문제 또는 영어 원문을 입력해 주세요.';
+            errBox.style.display = 'block';
+            return;
+          }
+
+          var sourceTag = document.getElementById('snapSourceTag').value.trim();
+          var modeSel = document.getElementById('snapModeSelect').value;
+          var solveNote = document.getElementById('snapSolveNote').value.trim();
+
+          var photoTasks = state.snapTab === 'photo'
+            ? state.snapPhotos.map(function (ph) {
+                return compressAndCrop(ph.rawUrl, ph.cropRect, state.snapPhotos.length >= 4 ? 1080 : 1280);
+              })
+            : [];
+
+          Promise.all(photoTasks).then(function (compressedList) {
+            var analysis = analyzeLocally(rawText, {
+              requestedType: modeSel,
+              sourceTag: sourceTag,
+              solveNote: solveNote
+            });
+            var now = Date.now();
+            var newPost = {
+              id: 'post-' + now,
+              createdAt: now,
+              updatedAt: now,
+              title: analysis.title,
+              sourceTag: sourceTag,
+              languageFormat: analysis.languageFormat,
+              postType: analysis.detectedPostType,
+              studyStatus: 'review_needed',
+              imageDataUrls: compressedList,
+              solvePreference: state.snapStyle,
+              solveRequestNote: solveNote,
+              userMemo: '',
+              userSelectedChoice: null,
+              writingAttempts: [],
+              followUpHistory: [],
+              analysis: analysis
+            };
+            state.posts.unshift(newPost);
+            savePosts(state.posts);
+
+            state.snapOpen = false;
+            state.snapPhotos = [];
+            state.snapActivePhotoIdx = 0;
+            document.getElementById('snapTextInput').value = '';
+            document.getElementById('snapPhotoTextNote').value = '';
+            document.getElementById('snapSourceTag').value = '';
+            document.getElementById('snapSolveNote').value = '';
+            state.activeView = 'feed';
+            selectPost(newPost.id);
+          });
+        });
+
+        // Tutor Chat Submit
+        function submitTutorMessage(overrideText) {
+          var inputEl = document.getElementById('tutorInput');
+          var q = (overrideText !== undefined ? overrideText : inputEl.value).trim();
+          var cond = document.getElementById('tutorCustomCondition').value.trim();
+          var cont = document.getElementById('tutorCustomContent').value.trim();
+          if (!q && !cont) return;
+
+          var attachChk = document.getElementById('tutorAttachContext').checked;
+          var activePost = attachChk ? getSelectedPost() : null;
+
+          var displayQ = q || '위 조건과 첨부한 내용에 맞춰 풀이·점검해 주세요.';
+          state.tutorMessages.push({
+            id: 'u-' + Date.now(),
+            role: 'user',
+            text: displayQ,
+            customCondition: cond || undefined,
+            customContent: cont || undefined,
+            createdAt: Date.now()
+          });
+
+          var reply = generateLocalCoachReply(displayQ, cond, cont, activePost, state.tutorRole, state.tutorStyle);
+          state.tutorMessages.push({
+            id: 'm-' + (Date.now() + 1),
+            role: 'model',
+            text: reply,
+            createdAt: Date.now()
+          });
+
+          saveChat(state.tutorMessages);
+          if (overrideText === undefined) inputEl.value = '';
+          document.getElementById('tutorCustomContent').value = '';
+          renderTutorDrawer();
+        }
+
+        document.getElementById('tutorForm').addEventListener('submit', function (e) {
+          e.preventDefault();
+          submitTutorMessage();
+        });
+
+        document.getElementById('tutorInput').addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            submitTutorMessage();
+          }
+        });
+
+        render();
+      })();
+    </script>
+  </body>
+</html>
